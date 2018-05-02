@@ -9,6 +9,17 @@
 
     <Button
         android:id="@+id/create_new_item_button"
+        android:layout_width="51dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@android:drawable/ic_menu_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/backButton"
         android:layout_width="43dp"
         android:layout_height="43dp"
         android:layout_marginLeft="8dp"
@@ -18,18 +29,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/backButton"
-        android:layout_width="43dp"
-        android:layout_height="41dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginStart="4dp"
-        android:background="?attr/actionModeCloseDrawable"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/listName"
         android:layout_width="107dp"
         android:layout_height="28dp"
         android:layout_marginEnd="8dp"

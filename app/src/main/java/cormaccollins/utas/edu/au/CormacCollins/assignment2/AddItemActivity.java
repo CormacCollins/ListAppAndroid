@@ -8,16 +8,22 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 
 public class AddItemActivity extends AppCompatActivity {
+
+    private String listName = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_item_layout);
+
+        setListTitle();
 
 
         Button bckButton = findViewById(R.id.return_to_shopping_list_button);
@@ -25,6 +31,7 @@ public class AddItemActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(view.getContext(), ListActivity.class);
 
+                i.putExtra("ListName", listName);
                 //Code to organise what information we add to next intent
                 //Do we want to send back any information if things are fileed out
 
@@ -32,6 +39,8 @@ public class AddItemActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+
 
 //
 //        final String[] string_array = getResources().getStringArray(R.array.add_item_options);
@@ -57,6 +66,12 @@ public class AddItemActivity extends AppCompatActivity {
 //            }
 //        });
 
+    }
+
+    private void setListTitle(){
+        Intent i = getIntent();
+        String s = i.getExtras().getString("ListName");
+        listName = s;
     }
 
 }
