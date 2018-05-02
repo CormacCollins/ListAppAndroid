@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">AndroidListApp</string>
+    <string name="action_settings">Settings</string>
+
+
+    <string-array
+        name="add_item_options">
+        <item>Name</item>
+        <item>Quantity</item>
+        <item>Price</item>
+        <item>Comment</item>
+        <item>Category</item>
+    </string-array>
+</resources>
