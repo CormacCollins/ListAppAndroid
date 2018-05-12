@@ -4,9 +4,15 @@ package cormaccollins.utas.edu.au.CormacCollins.assignment2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class ListActivity extends AppCompatActivity {
 
@@ -19,9 +25,36 @@ public class ListActivity extends AppCompatActivity {
 
         setListTitle();
 
+        ArrayList<Item> items = new ArrayList<Item>();
+        items.add(new Item("New Item", "Fruit"));
+        items.add(new Item("apple", "Fruit"));
 
-        //Event for return from list button
-        Button bckButton = findViewById(R.id.backButton);
+        final ItemArrayAdapter myListAdapter = new ItemArrayAdapter( getApplicationContext(), R.layout.list_item_layout, items);
+
+        //Adapter attached each item in 'items' to the listView in the list_layout - showing all the items
+        ListView myList = findViewById(R.id.item_list_view);
+        myList.setAdapter(myListAdapter);
+
+
+        // --------------------------------------------------
+        // When checkbox is tapped - check it
+        // --------------------------------------------------
+//        CheckBox chkBox = myList. (R.id.itemCheckBox);
+//        chkBox.setOnClickListener(
+//            new View.OnClickListener() {
+//                  @Override
+//                  public void onClick(View view) {
+//
+//                  }
+//          });
+
+
+                // ------------------------------------------------
+                // ------------- Button Setup ---------------------
+                // ------------------------------------------------
+
+                //Event for return from list button
+                Button bckButton = findViewById(R.id.backButton);
         bckButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent i = new Intent(view.getContext(), MainActivity.class);
@@ -61,5 +94,7 @@ public class ListActivity extends AppCompatActivity {
         txtView.setText(s);
         listName = s;
     }
+
+
 
 }
