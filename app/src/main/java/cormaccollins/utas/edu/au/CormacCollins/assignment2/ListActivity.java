@@ -2,6 +2,7 @@ package cormaccollins.utas.edu.au.CormacCollins.assignment2;
 
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListActivity extends AppCompatActivity {
 
@@ -26,14 +28,25 @@ public class ListActivity extends AppCompatActivity {
         setListTitle();
 
         ArrayList<Item> items = new ArrayList<Item>();
-        items.add(new Item("New Item", "Fruit"));
-        items.add(new Item("apple", "Fruit"));
+        Item item1 = new Item("New Item", "Fruit");
+        Item item2 = new Item("apple", "Fruit");
+        items.add(item1);
+        items.add(item2);
+
 
         final ItemArrayAdapter myListAdapter = new ItemArrayAdapter( getApplicationContext(), R.layout.list_item_layout, items);
 
         //Adapter attached each item in 'items' to the listView in the list_layout - showing all the items
         ListView myList = findViewById(R.id.item_list_view);
         myList.setAdapter(myListAdapter);
+
+
+
+        ListDatabase databaseConnection = new ListDatabase(this);
+        final SQLiteDatabase db = databaseConnection.open();
+        ListData ls = new ListData("New_List", items);
+        ListTable.insert(db, ls);
+
 
 
         // --------------------------------------------------
