@@ -31,8 +31,8 @@ public class ListTable {
 
         //Creates a List Table
         public static final String CREATE_STATEMENT =
-                "CREATE TABLE " + TABLE_NAME +  "(" + KEY_LIST_ID + " integer primary key autoincrement, "
-                + LIST_NAME + " string not null, " + ITEM_TABLE_ID + " int not null," + CATEGORIES + " string not null"
+                "CREATE TABLE " + TABLE_NAME +  " (" + KEY_LIST_ID + " integer primary key autoincrement, "
+                + LIST_NAME + " string not null, " + ITEM_TABLE_ID + " int not null, " + CATEGORIES + " string not null "
                         + ");";
 
         public static void insert(SQLiteDatabase db, ListData l) {
@@ -54,20 +54,30 @@ public class ListTable {
 
 
                 //By this stage the other tables should have been added, with their unique id's passed back up the heirarchy
-                db.insert(TABLE_NAME, null, values);
+                long rowInserted = db.insert(TABLE_NAME, null, values);
+                if(rowInserted != -1)
+                        Log.d("New row added, row id ", Long.toString(rowInserted));
+                else
+                        Log.d("Something wrong ", Long.toString(rowInserted));
+
                 Log.d("ListTable", " - Printing tables");
-                print_tables(db);
+                print_tables(db, l);
 
         }
 
-        public static void print_tables(SQLiteDatabase db) {
+        public static void print_tables(SQLiteDatabase db, ListData l) {
                 ArrayList<String> arrTblNames = new ArrayList<String>();
-                Cursor c = db.rawQuery("SELECT * FROM New_List", null);
+                String tblName = l.getListName();
+                Cursor c = db.query(TABLE_NAME, null, null, null, null, null, null);
 
-                if (c.moveToFirst()) {
-                        while ( !c.isAfterLast() ) {
-                                arrTblNames.add( c.getString( c.getColumnIndex("name")) );
-                                c.moveToNext();
+                if(c!= null) {
+                        arrTblNames.add(c.getColumnNames()[0]);
+                        if (c.moveToFirst()) {
+                                while (!c.isAfterLast()) {
+                                        arrTblNames.add(c.getString(c.getColumnIndex(LIST_NAME)));
+                                        arrTblNames.add(c.getString(c.getColumnIndex(KEY_LIST_ID)));
+                                        c.moveToNext();
+                                }
                         }
                 }
                 for (String s : arrTblNames

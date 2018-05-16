@@ -44,7 +44,7 @@ public class ListActivity extends AppCompatActivity {
 
         ListDatabase databaseConnection = new ListDatabase(this);
         final SQLiteDatabase db = databaseConnection.open();
-        ListData ls = new ListData("New_List", items);
+        ListData ls = new ListData("cormac_list", items);
         ListTable.insert(db, ls);
 
 

@@ -21,6 +21,7 @@ public class ListData  {
     public ListData(String listName, ArrayList<Item> itemList){
         name = listName;
         items = itemList;
+        categories = ""; //empty if not used
     }
 
     public void addItem(Item item){
