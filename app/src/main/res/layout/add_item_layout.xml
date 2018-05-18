@@ -9,10 +9,12 @@
     <Button
         android:id="@+id/return_to_shopping_list_button"
         android:layout_width="43dp"
-        android:layout_height="43dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="214dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="?attr/actionModeCloseDrawable"
+        app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,12 +22,14 @@
         android:id="@+id/name_layout"
         android:layout_width="match_parent"
         android:layout_height="55dp"
+        android:layout_marginBottom="317dp"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="48dp"
         android:background="@android:color/white"
         android:maxHeight="65dp"
         android:minHeight="125dp"
+        app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -84,7 +88,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="number"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView4"
@@ -160,7 +164,7 @@
         android:layout_height="55dp"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="92dp"
         android:background="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -214,5 +218,34 @@
             app:layout_constraintVertical_bias="0.473" />
 
     </android.support.constraint.ConstraintLayout>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="43dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="28dp"
+        android:layout_marginStart="8dp"
+        android:text="Submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.535"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name_layout" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="198dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginStart="35dp"
+        android:text="Calculate"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/return_to_shopping_list_button" />
 
 </android.support.constraint.ConstraintLayout>
