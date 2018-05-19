@@ -1,10 +1,12 @@
 package cormaccollins.utas.edu.au.CormacCollins.assignment2;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListDatabase {
@@ -51,9 +53,11 @@ public class ListDatabase {
         public void onCreate(SQLiteDatabase db){
             Log.d(TAG, "DatabaseHelper onCreate");
             //Setting up templates for each table type (List, item_list, item)
+
             db.execSQL(ListTable.CREATE_STATEMENT);
-//            db.execSQL(ListTable.ITEM_LIST_CREATE_STATEMENT);
-//            db.execSQL(ListTable.ITEM_CREATE_STATEMENT);
+            db.execSQL(ListTable.ItemListTable.CREATE_STATEMENT_ITEM_LIST);
+            db.execSQL(ListTable.ItemTable.CREATE_STATEMENT_ITEM);
+
 
         }
 
@@ -61,6 +65,8 @@ public class ListDatabase {
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
             Log.d(TAG, "DatabaseHelper onUpgrade");
             db.execSQL("DROP TABLE IF EXISTS " + ListTable.TABLE_NAME);
+            db.execSQL("DROP TABLE IF EXISTS " + ListTable.ItemListTable.ITEM_TABLE_NAME);
+            db.execSQL("DROP TABLE IF EXISTS " + ListTable.ItemTable.ITEM_TABLE);
             onCreate(db); //this will recreate the database as if it were new
         }
 

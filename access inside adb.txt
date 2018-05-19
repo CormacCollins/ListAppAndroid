@@ -1,0 +1,2 @@
+su
+cd data/data/cormaccollins.utas.edu.au.CormacCollins.assignment2/databases/ListDatabase

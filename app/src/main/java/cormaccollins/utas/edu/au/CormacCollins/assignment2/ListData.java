@@ -22,6 +22,8 @@ public class ListData  {
         name = listName;
         items = itemList;
         categories = ""; //empty if not used
+        list_id = -1;
+        item_list_id = -1;
     }
 
     public void addItem(Item item){

@@ -28,8 +28,8 @@ public class ListActivity extends AppCompatActivity {
         setListTitle();
 
         ArrayList<Item> items = new ArrayList<Item>();
-        Item item1 = new Item("New Item", "Fruit");
-        Item item2 = new Item("apple", "Fruit");
+        Item item1 = new Item("banana", "Fruit");
+        Item item2 = new Item("kiwi fruit", "Fruit");
         items.add(item1);
         items.add(item2);
 
@@ -44,7 +44,7 @@ public class ListActivity extends AppCompatActivity {
 
         ListDatabase databaseConnection = new ListDatabase(this);
         final SQLiteDatabase db = databaseConnection.open();
-        ListData ls = new ListData("cormac_list", items);
+        ListData ls = new ListData("new_list", items);
         ListTable.insert(db, ls);
 
 
