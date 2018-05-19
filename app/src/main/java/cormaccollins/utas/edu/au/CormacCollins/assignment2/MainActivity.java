@@ -100,14 +100,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void onButtonClick (View v)
     {
-        EditText e1 = (EditText)findViewById(R.id.AmountEdit);
-        EditText e2 = (EditText)findViewById(R.id.UnitEdit);
-        TextView t1 = (TextView)findViewById(R.id.CalculateView);
+        EditText e1 = (EditText) this.findViewById(R.id.AmountEdit);
+        EditText e2 = (EditText) this.findViewById(R.id.UnitEdit);
+        TextView t1 = (TextView) this.findViewById(R.id.CalculateView);
 
         int num1 = Integer.parseInt(e1.getText().toString());
         int num2 = Integer.parseInt(e2.getText().toString());
         int sum = num2 * num1;
-        t1.setText(Integer.toString(sum));
+        t1.setText(String.valueOf(sum));
 
     }
 }
