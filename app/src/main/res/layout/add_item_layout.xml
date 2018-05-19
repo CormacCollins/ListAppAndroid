@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/name_layout"
+        android:id="@+id/NameLayout"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:layout_marginBottom="317dp"
@@ -65,7 +65,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/amount_layout"
+        android:id="@+id/AmountLayout"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:layout_marginEnd="20dp"
@@ -77,7 +77,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name_layout">
+        app:layout_constraintTop_toBottomOf="@+id/NameLayout">
 
         <EditText
             android:id="@+id/AmountEdit"
@@ -101,15 +101,13 @@
             android:layout_height="25dp"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:text="Amount"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/Unit_Layout"
+        android:id="@+id/UnitLayout"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:layout_marginEnd="20dp"
@@ -118,7 +116,7 @@
         android:background="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/amount_layout">
+        app:layout_constraintTop_toBottomOf="@+id/AmountLayout">
 
         <EditText
             android:id="@+id/UnitEdit"
@@ -171,19 +169,19 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Unit_Layout">
+        app:layout_constraintTop_toBottomOf="@+id/UnitLayout">
 
         <TextView
             android:id="@+id/TotalView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginEnd="100dp"
+            android:layout_marginStart="14dp"
             android:layout_marginTop="8dp"
             android:text="Total Cost"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/AUView2"
+            app:layout_constraintEnd_toStartOf="@+id/CalculateView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -192,30 +190,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginEnd="20dp"
             android:layout_marginStart="93dp"
             android:layout_marginTop="8dp"
             android:text="AU$"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/CalculateEdit"
-            app:layout_constraintHorizontal_bias="0.7"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/CalculateEdit"
-            android:layout_width="188dp"
-            android:layout_height="46dp"
-            android:layout_marginEnd="47dp"
-            android:ems="10"
-            android:inputType="number"
+        <TextView
+            android:id="@+id/CalculateView"
+            android:layout_width="118dp"
+            android:layout_height="47dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginTop="18dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/AUView2"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.473" />
+            app:layout_constraintStart_toEndOf="@+id/TotalView"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 
@@ -233,7 +225,7 @@
         app:layout_constraintHorizontal_bias="0.535"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/NameLayout" />
 
     <Button
         android:id="@+id/CalculateButton"
@@ -243,10 +235,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:onClick="onButtonClick"
         android:text="Calculate"
         app:layout_constraintBottom_toTopOf="@+id/TotalLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Unit_Layout" />
+        app:layout_constraintTop_toBottomOf="@+id/UnitLayout" />
 
 </android.support.constraint.ConstraintLayout>
