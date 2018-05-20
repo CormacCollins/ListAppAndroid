@@ -77,6 +77,31 @@ public class ListTable {
                 return -1;
         }
 
+        public static String[] getListNames(SQLiteDatabase db){
+                String rawQuery = "SELECT " + LIST_NAME  + " FROM " + TABLE_NAME;
+                Cursor c;
+
+                try {
+                        c = db.rawQuery(rawQuery, null);
+                }
+                catch(Exception ex){
+                        //No lists
+                        return new String[0];
+                }
+
+                String[] names = new String[c.getCount()];
+                int nameCount = 0;
+                if (c.moveToFirst()) {
+                        while (!c.isAfterLast()) {
+                                String name =  (c.getString(c.getColumnIndex(LIST_NAME)));
+                                names[nameCount] = name;
+                                c.moveToNext();
+                        }
+                }
+
+                return names;
+        }
+
         public static void insert(SQLiteDatabase db, ListData l) {
 
                 //print_tables_in_db(db);

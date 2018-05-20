@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,8 +14,11 @@ import android.text.InputType;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.Serializable;
@@ -37,6 +42,41 @@ public class MainActivity extends AppCompatActivity {
                 createAlertDialog(view);
             }
         });
+
+        ListDatabase databaseConnection = new ListDatabase(this);
+        final SQLiteDatabase db = databaseConnection.open();
+
+
+
+        ListView listNames = findViewById(R.id.list_view_names);
+        if(listNames.getCount() == 0) {
+            String[] names = ListTable.getListNames(db);
+
+            ArrayAdapter<String> myListAdapter =new ArrayAdapter<String>(
+                    this, android.R.layout.simple_list_item_1, names){
+
+
+                //Need tochange to set text as black - quick and easy
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    View view = super.getView(position, convertView, parent);
+
+                    TextView textView=(TextView) view.findViewById(android.R.id.text1);
+
+                    /*YOUR CHOICE OF COLOR*/
+                    textView.setTextColor(Color.BLACK);
+
+                    return view;
+                }
+            };
+
+
+
+            listNames.setAdapter(myListAdapter);
+        }
+
+        db.close();
+
     }
 
     @Override

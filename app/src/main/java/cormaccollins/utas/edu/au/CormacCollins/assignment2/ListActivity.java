@@ -46,7 +46,7 @@ public class ListActivity extends AppCompatActivity {
         final SQLiteDatabase db = databaseConnection.open();
         ListData ls = new ListData("new_list", items);
         ListTable.insert(db, ls);
-
+        db.close();
 
 
         // --------------------------------------------------
