@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -40,6 +41,13 @@ public class AddItemActivity extends AppCompatActivity {
             }
         });
 
+        //submit button action
+        Button submitBtn = findViewById(R.id.SubmitButton);
+        submitBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                onSubmitClick(view);
+            }
+        });
 
 
 //
@@ -72,6 +80,19 @@ public class AddItemActivity extends AppCompatActivity {
         Intent i = getIntent();
         String s = i.getExtras().getString("ListName");
         listName = s;
+    }
+
+    public void onSubmitClick (View v)
+    {
+        EditText e1 = this.findViewById(R.id.AmountEdit);
+        EditText e2 = this.findViewById(R.id.UnitEdit);
+        TextView t1 = this.findViewById(R.id.CalculateView);
+
+        int num1 = Integer.parseInt(e1.getText().toString());
+        int num2 = Integer.parseInt(e2.getText().toString());
+        int sum = num2 * num1;
+        t1.setText(String.valueOf(sum));
+
     }
 
 }
