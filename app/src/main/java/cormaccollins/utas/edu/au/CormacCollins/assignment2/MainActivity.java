@@ -3,6 +3,7 @@ package cormaccollins.utas.edu.au.CormacCollins.assignment2;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +24,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,9 +53,21 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        ListView listNames = findViewById(R.id.list_view_names);
+        final ListView listNames = findViewById(R.id.list_view_names);
         if(listNames.getCount() == 0) {
-            String[] names = ListTable.getListNames(db);
+            final List<ListData> lists = ListTable.getLists(db);
+
+            int count = lists.size();
+            String[] names = new String[count];
+
+            //need it for later transition
+            HashMap<Integer, String> nameToID = new HashMap<>();
+
+            count = 0;
+            for(ListData ls : lists){
+                names[count++] = ls.getListName();
+                nameToID.put(ls.getList_id(), ls.getListName());
+            }
 
             ArrayAdapter<String> myListAdapter =new ArrayAdapter<String>(
                     this, android.R.layout.simple_list_item_1, names){
@@ -61,13 +78,40 @@ public class MainActivity extends AppCompatActivity {
                 public View getView(int position, View convertView, ViewGroup parent) {
                     View view = super.getView(position, convertView, parent);
 
-                    TextView textView=(TextView) view.findViewById(android.R.id.text1);
+
+
+                    final TextView textView=(TextView) view.findViewById(android.R.id.text1);
 
                     /*YOUR CHOICE OF COLOR*/
                     textView.setTextColor(Color.BLACK);
 
+                    //If item is cliecked go to listActivity with the selected list
+                    view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            Log.d("On click list item", "clicked!");
+                            Intent i = new Intent(view.getContext(), ListActivity.class);
+                            String name = textView.getText().toString();
+                            i.putExtra("ListName", name);
+
+                            ListData newList = null;
+                            for(ListData l : lists){
+                                if(l.getListName() == name){
+                                    newList = l;
+                                }
+                            }
+
+                            //Should be list by that name because the name came form that same original List<i>
+                            CurrentList.addList(newList);
+
+                            startActivity(i);
+                        }
+                    });
+
                     return view;
                 }
+
             };
 
 

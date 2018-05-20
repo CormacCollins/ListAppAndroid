@@ -28,10 +28,8 @@ public class ListActivity extends AppCompatActivity {
         setListTitle();
 
         ArrayList<Item> items = new ArrayList<Item>();
-        Item item1 = new Item("banana", "Fruit");
-        Item item2 = new Item("kiwi fruit", "Fruit");
-        items.add(item1);
-        items.add(item2);
+        List<Item> dbItems = getItems(CurrentList.list);
+        items.addAll(dbItems);
 
 
         final ItemArrayAdapter myListAdapter = new ItemArrayAdapter( getApplicationContext(), R.layout.list_item_layout, items);
@@ -42,11 +40,11 @@ public class ListActivity extends AppCompatActivity {
 
 
 
-        ListDatabase databaseConnection = new ListDatabase(this);
-        final SQLiteDatabase db = databaseConnection.open();
-        ListData ls = new ListData("new_list", items);
-        ListTable.insert(db, ls);
-        db.close();
+//        ListDatabase databaseConnection = new ListDatabase(this);
+//        final SQLiteDatabase db = databaseConnection.open();
+//        ListData ls = new ListData("new_list", items);
+//        ListTable.insert(db, ls);
+//        db.close();
 
 
         // --------------------------------------------------
@@ -106,6 +104,14 @@ public class ListActivity extends AppCompatActivity {
         TextView txtView = findViewById(R.id.listName);
         txtView.setText(s);
         listName = s;
+    }
+
+    public List<Item> getItems(ListData ls){
+        ListDatabase databaseConnection = new ListDatabase(this);
+        final SQLiteDatabase db = databaseConnection.open();
+        List<Item> items = ListTable.ItemListTable.getItems(db, ls);
+        db.close();
+        return items;
     }
 
 

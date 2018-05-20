@@ -11,6 +11,13 @@ public class Item {
         tag = itmTag;
     }
 
+    public Item(String itmName, String itmTag, int price_, int id){
+        name = itmName;
+        tag = itmTag;
+        price = price_;
+        unique_id = id;
+    }
+
     public String getItemName(){
         return name;
     }

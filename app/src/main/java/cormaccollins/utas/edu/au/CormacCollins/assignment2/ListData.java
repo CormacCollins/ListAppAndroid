@@ -1,18 +1,14 @@
 package cormaccollins.utas.edu.au.CormacCollins.assignment2;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ListData  {
     private String name;
     private Integer list_id = null;
-    private Integer item_list_id = null;
+    private Integer item_table_id = null;
     private ArrayList<Item> items;
     //We will just have comma seperates names - varchar in sql lite is 500 in size,
     // we should not go over this and we can prevent any greater
@@ -23,7 +19,15 @@ public class ListData  {
         items = itemList;
         categories = ""; //empty if not used
         list_id = -1;
-        item_list_id = -1;
+        item_table_id = -1;
+    }
+
+    public ListData(String listName, ArrayList<Item> itemList, String cat, int listID, int tableID){
+        name = listName;
+        items = itemList;
+        categories = ""; //empty if not used
+        list_id = listID;
+        item_table_id = -tableID;
     }
 
     public void addItem(Item item){
@@ -52,7 +56,7 @@ public class ListData  {
         }
     }
 
-    public Integer getList_id(){
+    public int getList_id(){
         return list_id;
     }
 
@@ -65,14 +69,14 @@ public class ListData  {
     }
 
 
-    public Integer getItem_list_id(){
-        return item_list_id;
+    public int getItem_table_id(){
+        return item_table_id;
     }
 
     //Same as list id pattern
-    public void setItem_list_id(Integer id){
-        if(item_list_id == null){
-            item_list_id = id;
+    public void setItem_table_id(Integer id){
+        if(item_table_id == null){
+            item_table_id = id;
         }
     }
 

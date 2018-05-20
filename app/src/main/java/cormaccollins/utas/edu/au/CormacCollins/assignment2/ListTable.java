@@ -7,7 +7,6 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 
 // ----------------------------------------------------------------------------------------------------------------
@@ -77,8 +76,9 @@ public class ListTable {
                 return -1;
         }
 
-        public static String[] getListNames(SQLiteDatabase db){
-                String rawQuery = "SELECT " + LIST_NAME  + " FROM " + TABLE_NAME;
+        //Return lists without items
+        public static List<ListData> getLists(SQLiteDatabase db){
+                String rawQuery = "SELECT * FROM " + TABLE_NAME;
                 Cursor c;
 
                 try {
@@ -86,21 +86,28 @@ public class ListTable {
                 }
                 catch(Exception ex){
                         //No lists
-                        return new String[0];
+                        return null;
                 }
 
-                String[] names = new String[c.getCount()];
+                List<ListData> lsData = new ArrayList<ListData>();
                 int nameCount = 0;
                 if (c.moveToFirst()) {
                         while (!c.isAfterLast()) {
                                 String name =  (c.getString(c.getColumnIndex(LIST_NAME)));
-                                names[nameCount] = name;
+                                int list_id =  (c.getInt(c.getColumnIndex(KEY_LIST_ID)));
+                                int table_id =  (c.getInt(c.getColumnIndex(ITEM_TABLE_ID)));
+                                String categories = (c.getString(c.getColumnIndex(CATEGORIES)));
+
+                                ListData newList = new ListData(name, null, categories, list_id, table_id);
+                                lsData.add(newList);
                                 c.moveToNext();
                         }
                 }
 
-                return names;
+                return lsData;
         }
+
+
 
         public static void insert(SQLiteDatabase db, ListData l) {
 
@@ -271,6 +278,49 @@ public class ListTable {
 
                 }
 
+                public static List<Item> getItems(SQLiteDatabase db, ListData ls){
+                        List<Item> items = new ArrayList<Item>();
+                        int [] ids = getItemIDS(db, ls);
+                        for(int i = 0; i < ids.length; i++){
+                                items.add(ItemTable.getItem(db, ids[i]));
+
+                        }
+                        return items;
+                }
+
+                private static int[] getItemIDS(SQLiteDatabase db, ListData ls){
+                        String rawQuery = "SELECT * " + " FROM "
+                                + ITEM_TABLE_NAME + " WHERE " + ITEM_LIST_TABLE_ID + " = " + ls.getItem_table_id();
+
+                        Cursor c;
+                        try {
+                                c = db.rawQuery(rawQuery, null);
+                        }
+                        catch(Exception ex){
+                                Log.d("GetTableItem ids (SQL)", "TableID " + ls.getItem_table_id() + " does not exist");
+                                return null;
+                        }
+
+                        int[] ids = new int[c.getCount()];
+                        if(c!= null) {
+                                if (c.moveToFirst()) {
+                                        while (!c.isAfterLast()) {
+                                                int count = 0;
+                                                int id =  (c.getInt(c.getColumnIndex(ItemTable.ITEM_ID)));
+                                                ids[count++] = id;
+
+                                                c.moveToNext();
+                                        }
+                                }
+                        }
+
+                        return ids;
+                }
+
+                public static int getTableIDForList(SQLiteDatabase db, int id){
+                    return 1;
+                }
+
         }
 
 
@@ -308,6 +358,26 @@ public class ListTable {
                         db.insert(ITEM_TABLE, null, values);
                 }
 
+                public static Item getItem(SQLiteDatabase db, int itemId){
+                        String rawQuery = "SELECT * " + " FROM " + ITEM_TABLE + " WHERE " + ITEM_ID + " = " + itemId;
+
+                        Cursor c;
+                        try {
+                                c = db.rawQuery(rawQuery, null);
+                        }
+                        catch(Exception ex){
+                                Log.d("GetItem (SQL)", "Itemid " + itemId + " does not exist");
+                                return null;
+                        }
+
+                        //should only be 1 item to that id!
+                        String name =  c.getString(c.getColumnIndex(ITEM_NAME));
+                        String tag =  c.getString(c.getColumnIndex(TAG));
+                        int price =  c.getInt(c.getColumnIndex(PRICE));
+
+                        Item item = new Item(name, tag, price, itemId);
+                        return item;
+                }
 
 
                 //Get the unique id
