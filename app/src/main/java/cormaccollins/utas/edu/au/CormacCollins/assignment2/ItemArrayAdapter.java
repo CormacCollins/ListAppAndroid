@@ -65,7 +65,7 @@ public class ItemArrayAdapter extends ArrayAdapter<Item> {
         //textView.setText(p.getAddress());
         lblItem.setText(item.getItemName());
 
-        lblPrice.setText(Integer.toString(item.getItemPrice()));
+        lblPrice.setText(Float.toString(item.getItemPrice()));
 
         return row;
     }

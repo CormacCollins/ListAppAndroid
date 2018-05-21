@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -19,6 +20,7 @@ import java.util.List;
 public class ListActivity extends AppCompatActivity {
 
     private String listName = "";
+    private boolean hasItems = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +30,24 @@ public class ListActivity extends AppCompatActivity {
         setListTitle();
 
         ArrayList<Item> items = new ArrayList<Item>();
-        List<Item> dbItems = getItems(CurrentList.list);
-        items.addAll(dbItems);
+        List<Item> dbItems;
+        //if it doens't it's a new list
+        if(CurrentList.hasList) {
+            dbItems = CurrentList.list.getItems();
+            //add the updates to db
+            for(Item i : dbItems){
+                items.add(i);
+            }
+        } else{
+            //We are setting the current list since it is a new one - this will be used to store all information until we add it to the db
+            //when clicking save
+            List<Item> emptyItems = new ArrayList<Item>();
+            ListData ls = new ListData(listName, emptyItems);
+            CurrentList.addList(ls);
+        }
+
+
+
 
 
         final ItemArrayAdapter myListAdapter = new ItemArrayAdapter( getApplicationContext(), R.layout.list_item_layout, items);
@@ -78,6 +96,27 @@ public class ListActivity extends AppCompatActivity {
             }
         });
 
+        ImageView addListImageView = findViewById(R.id.addListImageView);
+        addListImageView.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent i = new Intent(view.getContext(), MainActivity.class);
+
+//                //Add list to db now that it is saved
+//                ListDatabase databaseConnection = new ListDatabase(ListActivity.this);
+//                final SQLiteDatabase db = databaseConnection.open();
+//                ListData ls = CurrentList.list;
+//                CurrentList.removeList();
+//                ListTable.insert(db, ls);
+//                db.close();
+
+                //Code to organise what information we add to next intent
+                //Do we want to send back any information if things are fileed out
+
+
+                startActivity(i);
+            }
+        });
+
 
         //Event for clicking add item
         Button newItemButton = findViewById(R.id.create_new_item_button);
@@ -106,13 +145,14 @@ public class ListActivity extends AppCompatActivity {
         listName = s;
     }
 
-    public List<Item> getItems(ListData ls){
-        ListDatabase databaseConnection = new ListDatabase(this);
-        final SQLiteDatabase db = databaseConnection.open();
-        List<Item> items = ListTable.ItemListTable.getItems(db, ls);
-        db.close();
-        return items;
-    }
+//    // not needed?
+//    public List<Item> getItems(ListData ls){
+//        ListDatabase databaseConnection = new ListDatabase(this);
+//        final SQLiteDatabase db = databaseConnection.open();
+//        List<Item> items = ListTable.ItemListTable.getItems(db, ls);
+//        db.close();
+//        return items;
+//    }
 
 
 

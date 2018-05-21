@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +51,21 @@ public class MainActivity extends AppCompatActivity {
 
         ListDatabase databaseConnection = new ListDatabase(this);
         final SQLiteDatabase db = databaseConnection.open();
+
+
+        Item newItem = new Item("Apple", "Fuirt", 1.5);
+        List<Item> items = new ArrayList<>();
+        items.add(newItem);
+        ListData ls = new ListData("new list", items);
+        PublicDBAccess.addNewList(db, ls);
+        db.close();
+
+        final SQLiteDatabase db2 = databaseConnection.open();
+        List<Item> items2 = new ArrayList<>();
+        Item newItem2 = new Item("Apple2", "Fuirt", 1.5);
+        items2.add(newItem2);
+        PublicDBAccess.addItemsToExistingList(db2, ls.getList_id(), items2);
+
 
 
 
@@ -98,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                             ListData newList = null;
                             for(ListData l : lists){
                                 if(l.getListName() == name){
-                                    newList = l;
+                                    newList = new ListData(l.getListName(), l.getItems(), l.getCategories(), l.getList_id(), l.getItem_table_id());
                                 }
                             }
 

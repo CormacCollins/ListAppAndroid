@@ -2,8 +2,10 @@ package cormaccollins.utas.edu.au.CormacCollins.assignment2;
 
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -88,10 +90,22 @@ public class AddItemActivity extends AppCompatActivity {
         EditText e2 = this.findViewById(R.id.UnitEdit);
         TextView t1 = this.findViewById(R.id.CalculateView);
 
-        int num1 = Integer.parseInt(e1.getText().toString());
-        int num2 = Integer.parseInt(e2.getText().toString());
-        int sum = num2 * num1;
-        t1.setText(String.valueOf(sum));
+
+        int price = Integer.parseInt(e1.getText().toString());
+        int count = Integer.parseInt(e2.getText().toString());
+        EditText itemEntry = findViewById(R.id.NameEdit);
+        String itemName = itemEntry.getText().toString();
+
+        //todo page needs tag adding
+       // Item newItem = new Item(itemName, "no tag", price, -1);
+
+        //add new item to code storage
+        //CurrentList.list.addItem(newItem);
+
+
+        Intent i = new Intent(v.getContext(), ListActivity.class);
+        i.putExtra("ListName", listName);
+        startActivity(i);
 
     }
 

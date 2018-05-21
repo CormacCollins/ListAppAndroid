@@ -54,9 +54,9 @@ public class ListDatabase {
             Log.d(TAG, "DatabaseHelper onCreate");
             //Setting up templates for each table type (List, item_list, item)
 
+            db.execSQL(ItemTable.CREATE_STATEMENT_ITEM);
+            db.execSQL(ItemListTable.CREATE_STATEMENT_ITEM_LIST);
             db.execSQL(ListTable.CREATE_STATEMENT);
-            db.execSQL(ListTable.ItemListTable.CREATE_STATEMENT_ITEM_LIST);
-            db.execSQL(ListTable.ItemTable.CREATE_STATEMENT_ITEM);
 
 
         }
@@ -64,9 +64,9 @@ public class ListDatabase {
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
             Log.d(TAG, "DatabaseHelper onUpgrade");
-            db.execSQL("DROP TABLE IF EXISTS " + ListTable.TABLE_NAME);
-            db.execSQL("DROP TABLE IF EXISTS " + ListTable.ItemListTable.ITEM_TABLE_NAME);
-            db.execSQL("DROP TABLE IF EXISTS " + ListTable.ItemTable.ITEM_TABLE);
+//            db.execSQL("DROP TABLE IF EXISTS " + ListTable.TABLE_NAME);
+//            db.execSQL("DROP TABLE IF EXISTS " + ListTable.ItemListTable.ITEM_TABLE_NAME);
+            db.execSQL("DROP TABLE IF EXISTS " + ItemTable.ITEM_TABLE);
             onCreate(db); //this will recreate the database as if it were new
         }
 
