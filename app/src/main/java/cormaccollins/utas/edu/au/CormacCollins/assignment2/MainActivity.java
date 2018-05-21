@@ -53,50 +53,42 @@ public class MainActivity extends AppCompatActivity {
         final SQLiteDatabase db = databaseConnection.open();
 
 
-        Item newItem = new Item("Apple", "Fuirt", 1.5);
-        List<Item> items = new ArrayList<>();
-        items.add(newItem);
-        ListData ls = new ListData("new list", items);
-        PublicDBAccess.addNewList(db, ls);
-        db.close();
-
-        final SQLiteDatabase db2 = databaseConnection.open();
-        List<Item> items2 = new ArrayList<>();
-        Item newItem2 = new Item("Apple2", "Fuirt", 1.5);
-        items2.add(newItem2);
-        PublicDBAccess.addItemsToExistingList(db2, ls.getList_id(), items2);
+//        Item newItem = new Item("Apple", "Fuirt", 1.5);
+//        List<Item> items = new ArrayList<>();
+//        items.add(newItem);
+//        ListData ls = new ListData("new list", items);
+//        PublicDBAccess.addNewList(db, ls);
+//        db.close();
+//
+//        final SQLiteDatabase db2 = databaseConnection.open();
+//        List<Item> items2 = new ArrayList<>();
+//        Item newItem2 = new Item("Apple2", "Fuirt", 1.5);
+//        items2.add(newItem2);
+//        PublicDBAccess.addItemsToExistingList(db2, ls.getList_id(), items2);
 
 
 
 
         final ListView listNames = findViewById(R.id.list_view_names);
         if(listNames.getCount() == 0) {
-            final List<ListData> lists = ListTable.getLists(db);
+            final List<ListData> lists = PublicDBAccess.getAllLists(db);
 
             int count = lists.size();
             String[] names = new String[count];
 
-            //need it for later transition
-            HashMap<Integer, String> nameToID = new HashMap<>();
-
             count = 0;
             for(ListData ls : lists){
                 names[count++] = ls.getListName();
-                nameToID.put(ls.getList_id(), ls.getListName());
             }
 
             ArrayAdapter<String> myListAdapter =new ArrayAdapter<String>(
                     this, android.R.layout.simple_list_item_1, names){
-
-
                 //Need tochange to set text as black - quick and easy
                 @Override
                 public View getView(int position, View convertView, ViewGroup parent) {
                     View view = super.getView(position, convertView, parent);
 
-
-
-                    final TextView textView=(TextView) view.findViewById(android.R.id.text1);
+                    final TextView textView = (TextView) view.findViewById(android.R.id.text1);
 
                     /*YOUR CHOICE OF COLOR*/
                     textView.setTextColor(Color.BLACK);

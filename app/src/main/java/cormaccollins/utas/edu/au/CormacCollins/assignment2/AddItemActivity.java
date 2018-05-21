@@ -51,31 +51,6 @@ public class AddItemActivity extends AppCompatActivity {
             }
         });
 
-
-//
-//        final String[] string_array = getResources().getStringArray(R.array.add_item_options);
-//        ArrayList<String> addItemNames = new ArrayList<>(Arrays.asList(string_array));
-//
-//        //Adapter = controller, which takes in a 'model' (data source like our array) which will go into our 'View'
-//        ArrayAdapter<String> myListAdapter = new ArrayAdapter<String>( getApplicationContext(), R.layout.add_item_layout , addItemNames);
-//
-//        final ListView optionsList = findViewById(R.id.options_list);
-//        optionsList.setAdapter(myListAdapter);
-//
-//
-
-
-
-//
-//        Button addItemButton = findViewById(R.id.add_item_button);
-//        addItemButton.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View view) {
-//
-//                //Code for add item to database and list etc.
-//
-//            }
-//        });
-
     }
 
     private void setListTitle(){
@@ -91,16 +66,28 @@ public class AddItemActivity extends AppCompatActivity {
         TextView t1 = this.findViewById(R.id.CalculateView);
 
 
-        int price = Integer.parseInt(e1.getText().toString());
-        int count = Integer.parseInt(e2.getText().toString());
+        int price = 0; String txtPrice = e1.getText().toString();
+        if(txtPrice.equals("")){
+            price = Integer.parseInt(txtPrice);
+        }
+
+
+        //to stop empty string errors
+        int count = 0; String txt = e2.getText().toString();
+        if(txt.equals("")){
+            count = Integer.parseInt(txt);
+        }
+
         EditText itemEntry = findViewById(R.id.NameEdit);
         String itemName = itemEntry.getText().toString();
 
         //todo page needs tag adding
-       // Item newItem = new Item(itemName, "no tag", price, -1);
-
         //add new item to code storage
-        //CurrentList.list.addItem(newItem);
+        Item itm = new Item(itemName, "", price);
+        for(int i = 1; i < count; i++){
+            itm.incrementCount();
+        }
+        CurrentList.list.addItem(itm);
 
 
         Intent i = new Intent(v.getContext(), ListActivity.class);

@@ -6,7 +6,7 @@ public class Item {
     private String name;
     private String tag;
     private float price;
-    private int unique_id;  //may be assigned by sql lite in future?
+    private long unique_id;  //may be assigned by sql lite in future?
     private int count = 0;
 
     public Item(String itmName, String itmTag){
@@ -44,7 +44,7 @@ public class Item {
         return count;
     }
 
-    public void set_id(int id){
+    public void set_id(long id){
         if(id != -1){
             unique_id = id;
         }
@@ -66,7 +66,7 @@ public class Item {
         return tag;
     }
 
-    public int getItemId(){
+    public long getItemId(){
         return unique_id;
     }
 

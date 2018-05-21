@@ -8,6 +8,11 @@ import java.util.List;
 
 public class PublicDBAccess {
 
+
+    //----------------------------------------------------
+    // ---------- INSERT STATEMENTS----------------------
+    // --------------------------------------------------
+
     //returns the primary key for the item
     private static long addItem(SQLiteDatabase db, Item i){
         return ItemTable.addItem(db, i);
@@ -55,7 +60,22 @@ public class PublicDBAccess {
         return ItemListTable.add_to_new_item_list_table(db, ids);
     }
 
-    private static void addItemToExistingList(SQLiteDatabase db, ListData ls){
 
+
+    // -----------------------------------------------------------------
+    // -------------- SELECT QUERIES -----------------------------------
+    // -----------------------------------------------------------------
+    public static List<ListData> getAllLists(SQLiteDatabase db){
+        List<ListData> lists = ListTable.get_lists(db);
+        //need to get all their items
+        for(ListData l : lists){
+            //get items and add to the list object
+            List<Item> items = ItemTable.getItemsFromItemTable(db, l.getItem_table_id());
+            for(Item i : items){
+                l.addItem(i);
+            }
+        }
+
+        return lists;
     }
 }

@@ -46,23 +46,11 @@ public class ListActivity extends AppCompatActivity {
             CurrentList.addList(ls);
         }
 
-
-
-
-
         final ItemArrayAdapter myListAdapter = new ItemArrayAdapter( getApplicationContext(), R.layout.list_item_layout, items);
 
         //Adapter attached each item in 'items' to the listView in the list_layout - showing all the items
         ListView myList = findViewById(R.id.item_list_view);
         myList.setAdapter(myListAdapter);
-
-
-
-//        ListDatabase databaseConnection = new ListDatabase(this);
-//        final SQLiteDatabase db = databaseConnection.open();
-//        ListData ls = new ListData("new_list", items);
-//        ListTable.insert(db, ls);
-//        db.close();
 
 
         // --------------------------------------------------
@@ -78,41 +66,33 @@ public class ListActivity extends AppCompatActivity {
 //          });
 
 
-                // ------------------------------------------------
-                // ------------- Button Setup ---------------------
-                // ------------------------------------------------
+        // ------------------------------------------------
+        // ------------- Button Setup ---------------------
+        // ------------------------------------------------
 
-                //Event for return from list button
-                Button bckButton = findViewById(R.id.backButton);
+        //Event for return from list button
+        Button bckButton = findViewById(R.id.backButton);
         bckButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent i = new Intent(view.getContext(), MainActivity.class);
-
-                //Code to organise what information we add to next intent
-                //Do we want to send back any information if things are fileed out
-
-
-                startActivity(i);
+    public void onClick(View view) {
+        //no data saved - just pressing back
+            Intent i = new Intent(view.getContext(), MainActivity.class);
+            startActivity(i);
             }
         });
 
+        //PRESS BUTTON TO ADD LIST/SAVE
         ImageView addListImageView = findViewById(R.id.addListImageView);
         addListImageView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent i = new Intent(view.getContext(), MainActivity.class);
-
-//                //Add list to db now that it is saved
-//                ListDatabase databaseConnection = new ListDatabase(ListActivity.this);
-//                final SQLiteDatabase db = databaseConnection.open();
-//                ListData ls = CurrentList.list;
-//                CurrentList.removeList();
-//                ListTable.insert(db, ls);
-//                db.close();
-
-                //Code to organise what information we add to next intent
-                //Do we want to send back any information if things are fileed out
-
-
+                //Add list to db now that it is saved
+                ListDatabase databaseConnection = new ListDatabase(ListActivity.this);
+                final SQLiteDatabase db = databaseConnection.open();
+                ListData ls = CurrentList.list;
+                PublicDBAccess.addItemsToExistingList(db, ls.getList_id(), ls.getItems());
+                //remove code storage of list as we are returning to home page (keep no memory of this list in the 'Current List'
+                CurrentList.removeList();
+                db.close();
                 startActivity(i);
             }
         });
@@ -123,13 +103,9 @@ public class ListActivity extends AppCompatActivity {
         newItemButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent i = new Intent(view.getContext(), AddItemActivity.class);
-
-
                 i.putExtra("ListName", listName);
                 //Code to organise what information we add to next intent
                 //Do we want to send back any information if things are fileed out
-
-
                 startActivity(i);
             }
         });

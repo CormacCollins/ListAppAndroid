@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ItemTable {
     public static final String ITEM_TABLE = "item_table";
     private static final String ITEM_TABLE_ID = "item_table_id";
@@ -24,7 +27,67 @@ public class ItemTable {
                     COUNT + " int not null " +
                     ");";
 
+    public static List<Item> getItemsFromItemTable(SQLiteDatabase db, long item_table_id){
+        String rawQuery = "SELECT * " + "FROM " + ITEM_TABLE ;
+        Cursor c = db.rawQuery(rawQuery, null);
 
+        long[] ids = itemTablegetIDS(db);
+
+        List<Item> items = new ArrayList<>();
+        c.moveToFirst();
+        if (c.moveToFirst()) {
+            while (!c.isAfterLast()) {
+                long item_id = (c.getLong(c.getColumnIndex(ITEM_ID)));
+
+                boolean isInTable = false;
+                for(long l : ids){
+                    if(item_id == l){
+                        isInTable = true;
+                    }
+                }
+                //if not from the table we skip adding it
+                if(!isInTable){
+                    c.moveToNext();
+                    continue;
+                }
+
+                String item_name = (c.getString(c.getColumnIndex(ITEM_NAME)));
+                String tag = (c.getString(c.getColumnIndex(TAG)));
+                int count = (c.getInt(c.getColumnIndex(COUNT)));
+                Float price = (c.getFloat(c.getColumnIndex(PRICE)));
+
+                Item it = new Item(item_name, tag, price);
+                it.set_id(item_id);
+                if(count > 1){
+                    it.incrementCount();
+                }
+
+                items.add(it);
+                c.moveToNext();
+            }
+        }
+
+
+
+        return items;
+    }
+
+    private static long[] itemTablegetIDS(SQLiteDatabase db){
+        String rawQuery = "SELECT " + ITEM_ID + " FROM " + ITEM_TABLE ;
+        Cursor c = db.rawQuery(rawQuery, null);
+
+        long[] ids = new long[c.getCount()];
+        int count = 0;
+        c.moveToFirst();
+        if (c.moveToFirst()) {
+            while (!c.isAfterLast()) {
+                ids[count] = c.getLong(c.getColumnIndex(ITEM_ID));
+                c.moveToNext();
+            }
+        }
+
+        return ids;
+    }
 
 //    public static Item getItem(SQLiteDatabase db, int itemId){
 //        String rawQuery = "SELECT * " + " FROM " + ITEM_TABLE + " WHERE " + ITEM_ID + " = " + itemId;

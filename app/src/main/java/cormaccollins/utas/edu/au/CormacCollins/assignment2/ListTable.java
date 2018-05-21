@@ -33,6 +33,27 @@ public class ListTable {
                 + LIST_NAME + " string not null, " + ITEM_TABLE_ID + " int, " + CATEGORIES + " string not null "
                         + ");";
 
+    public static List<ListData> get_lists(SQLiteDatabase db){
+        String rawQuery = "SELECT * " + " FROM " + TABLE_NAME;
+        Cursor c = db.rawQuery(rawQuery, null);
+
+        List<ListData> lists = new ArrayList<>();
+        c.moveToFirst();
+        if (c.moveToFirst()) {
+            while (!c.isAfterLast()) {
+                long list_id = (c.getLong(c.getColumnIndex(KEY_LIST_ID)));
+                String name = (c.getString(c.getColumnIndex(LIST_NAME)));
+                long item_table_id = (c.getLong(c.getColumnIndex(ITEM_TABLE_ID)));
+                String cats = (c.getString(c.getColumnIndex(CATEGORIES)));
+                ListData ls = new ListData(name, new ArrayList<Item>(), cats, list_id, item_table_id);
+                lists.add(ls);
+                c.moveToNext();
+            }
+        }
+
+        return lists;
+    }
+
         public static long add_new_list(SQLiteDatabase db, ListData ls, long table_id){
                 ContentValues values = new ContentValues();
                 values.put(LIST_NAME, ls.getListName());
