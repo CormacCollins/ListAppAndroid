@@ -20,7 +20,6 @@ import java.util.List;
 public class ListActivity extends AppCompatActivity {
 
     private String listName = "";
-    private boolean hasItems = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +88,16 @@ public class ListActivity extends AppCompatActivity {
                 ListDatabase databaseConnection = new ListDatabase(ListActivity.this);
                 final SQLiteDatabase db = databaseConnection.open();
                 ListData ls = CurrentList.list;
-                PublicDBAccess.addItemsToExistingList(db, ls.getList_id(), ls.getItems());
+                //used so we only add the new items
+
+                boolean isNewList = PublicDBAccess.list_exists(db, ls);
+
+                if(!isNewList){
+                    PublicDBAccess.addNewList(db, ls);
+                }
+                else{
+                    PublicDBAccess.addItemsToExistingList(db, ls.getList_id(), ls.getItems());
+                }
                 //remove code storage of list as we are returning to home page (keep no memory of this list in the 'Current List'
                 CurrentList.removeList();
                 db.close();

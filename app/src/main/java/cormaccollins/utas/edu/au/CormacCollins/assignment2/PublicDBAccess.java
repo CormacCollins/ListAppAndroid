@@ -45,14 +45,20 @@ public class PublicDBAccess {
         for(Item i : items) {
             //add items to db
             long item_id = addItem(db, i);
-            //add reference to items into item table
-            addItemToExistingItemTable(db, item_id, item_table_id);
+            //add reference to items into item table - if id -1 then it is a new item
+            if(i.getItemId() == -1) {
+                addItemToExistingItemTable(db, item_id, item_table_id);
+            }
         }
 
     }
 
     private static void addItemToExistingItemTable (SQLiteDatabase db, long item_id, long item_table_id){
         ItemListTable.add_items_to_existing_listTable(db, item_id, item_table_id);
+    }
+
+    public static boolean list_exists(SQLiteDatabase db, ListData ls){
+        return ListTable.list_exists(db, ls);
     }
 
     //returns unique id

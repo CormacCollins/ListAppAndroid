@@ -49,11 +49,17 @@ public class ItemListTable {
 
     public static void add_items_to_existing_listTable(SQLiteDatabase db, long item_id, long item_table_id) {
         ContentValues values = new ContentValues();
-        values.put(ITEM_LIST_TABLE_ID, item_table_id);
+        String strFilter = ITEM_LIST_TABLE_ID + "=?";
+        String[] args = new String[]{(Long.toString(item_table_id))};
         values.put(ITEM_ID, item_id);
-        db.update(ITEM_TABLE_NAME, values,
-                ITEM_LIST_TABLE_ID + " = " + Long.toString(item_table_id),
-                null);
+        int res = db.update(ITEM_TABLE_NAME, values, strFilter, args);
+//
+//        int res = db.insert(ITEM_TABLE_NAME, values,
+//                ITEM_LIST_TABLE_ID + "=?" + item_table_id,
+//                null);
+
+        //db.rawQuery(rawQuery, null);
+
     }
 
 //

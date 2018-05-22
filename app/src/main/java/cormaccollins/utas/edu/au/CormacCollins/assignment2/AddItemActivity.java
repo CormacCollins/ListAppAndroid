@@ -87,7 +87,8 @@ public class AddItemActivity extends AppCompatActivity {
         for(int i = 1; i < count; i++){
             itm.incrementCount();
         }
-        CurrentList.list.addItem(itm);
+        CurrentList.list.addItem(itm
+        );
 
 
         Intent i = new Intent(v.getContext(), ListActivity.class);

@@ -54,6 +54,19 @@ public class ListTable {
         return lists;
     }
 
+    public static boolean list_exists(SQLiteDatabase db, ListData checkingList){
+        List<ListData> lists = get_lists(db);
+
+        for(ListData l : lists){
+            if(l.getList_id() == checkingList.getList_id()){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
         public static long add_new_list(SQLiteDatabase db, ListData ls, long table_id){
                 ContentValues values = new ContentValues();
                 values.put(LIST_NAME, ls.getListName());
