@@ -87,9 +87,22 @@ public class AddItemActivity extends AppCompatActivity {
         for(int i = 1; i < count; i++){
             itm.incrementCount();
         }
-        CurrentList.list.addItem(itm
-        );
 
+        boolean alreadyInList = false;
+        for(Item i : CurrentList.list.getItems()){
+
+            if(itm.getItemName().equals(i.getItemName())){
+                for(int j = 0; j < itm.getCount(); j++){
+                    i.incrementCount();
+                }
+                alreadyInList = true;
+            }
+        }
+
+        if(!alreadyInList){
+            CurrentList.list.addItem(itm);
+
+        }
 
         Intent i = new Intent(v.getContext(), ListActivity.class);
         i.putExtra("ListName", listName);

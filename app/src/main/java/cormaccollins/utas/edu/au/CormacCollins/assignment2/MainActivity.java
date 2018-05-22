@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                             ListData newList = null;
                             for(ListData l : lists){
                                 if(l.getListName() == name){
-                                    newList = new ListData(l.getListName(), l.getItems(), l.getCategories(), l.getList_id(), l.getItem_table_id());
+                                    newList = new ListData(l.getListName(), l.getItems(), l.getCategories(), l.getList_id(), 0);
                                 }
                             }
 

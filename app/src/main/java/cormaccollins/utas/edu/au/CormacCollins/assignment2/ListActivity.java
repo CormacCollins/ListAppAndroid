@@ -90,9 +90,9 @@ public class ListActivity extends AppCompatActivity {
                 ListData ls = CurrentList.list;
                 //used so we only add the new items
 
-                boolean isNewList = PublicDBAccess.list_exists(db, ls);
+                boolean listExists = PublicDBAccess.list_exists(db, ls);
 
-                if(!isNewList){
+                if(!listExists){
                     PublicDBAccess.addNewList(db, ls);
                 }
                 else{

@@ -8,7 +8,7 @@ import java.util.List;
 public class ListData  {
     private String name;
     private Long list_id = null;
-    private Long item_table_id = null;
+    //private Long item_table_id = null;
     private List<Item> items;
     //We will just have comma seperates names - varchar in sql lite is 500 in size,
     // we should not go over this and we can prevent any greater
@@ -19,7 +19,7 @@ public class ListData  {
         items = itemList;
         categories = ""; //empty if not used
         list_id = (long)0;
-        item_table_id = (long)0;
+       // item_table_id = (long)0;
     }
 
     public ListData(String listName, List<Item> itemList, String cat, long listID, long tableID){
@@ -27,7 +27,7 @@ public class ListData  {
         items = itemList;
         categories = ""; //empty if not used
         list_id = listID;
-        item_table_id = tableID;
+      //  item_table_id = tableID;
     }
 
     public ListData(ListData ls, long listID, long tableID){
@@ -35,7 +35,7 @@ public class ListData  {
         items = ls.getItems();
         categories = ls.getCategories(); //empty if not used
         list_id = listID;
-        item_table_id = tableID;
+       // item_table_id = tableID;
     }
 
     public void addItem(Item item){
@@ -72,11 +72,11 @@ public class ListData  {
         return list_id;
     }
 
-    public void set_table_id(long id){
-        if(item_table_id == 0){
-            item_table_id = id;
-        }
-    }
+//    public void set_table_id(long id){
+//        if(item_table_id == 0){
+//            item_table_id = id;
+//        }
+//    }
 
     //will only set the id if there is none already
     //Stops user from changing a unique db id
@@ -87,15 +87,15 @@ public class ListData  {
     }
 
 
-    public long getItem_table_id(){
-        return item_table_id;
-    }
-
-    //Same as list id pattern
-    public void setItem_table_id(long id){
-        if(item_table_id == null){
-            item_table_id = id;
-        }
-    }
+//    public long getItem_table_id(){
+//        return item_table_id;
+//    }
+//
+//    //Same as list id pattern
+//    public void setItem_table_id(long id){
+//        if(item_table_id == null){
+//            item_table_id = id;
+//        }
+//    }
 
 }
