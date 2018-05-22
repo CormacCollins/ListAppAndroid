@@ -55,7 +55,6 @@ public class ListDatabase {
             //Setting up templates for each table type (List, item_list, item)
 
             db.execSQL(ItemTable.CREATE_STATEMENT_ITEM);
-            db.execSQL(ItemListTable.CREATE_STATEMENT_ITEM_LIST);
             db.execSQL(ListTable.CREATE_STATEMENT);
 
 

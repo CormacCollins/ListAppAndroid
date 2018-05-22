@@ -46,7 +46,7 @@ public class ItemTable {
     }
 
     public static boolean itemExists(SQLiteDatabase db, String item_name){
-        String rawQuery = "SELECT COUNT(*) " + "FROM " + ITEM_TABLE + " WHERE " + ITEM_NAME + " = " + "'" +item_name + "'";
+        String rawQuery = "SELECT " + ITEM_ID + " FROM " + ITEM_TABLE + " WHERE " + ITEM_NAME + " = " + "'" +item_name + "'";
         Cursor c = db.rawQuery(rawQuery, null);
         int count = c.getCount();
         if(count <= 0){

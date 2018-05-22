@@ -123,7 +123,6 @@ public class ListActivity extends AppCompatActivity {
     private void setListTitle(){
         Intent i = getIntent();
         String s = i.getExtras().getString("ListName");
-
         TextView txtView = findViewById(R.id.listName);
         txtView.setText(s);
         listName = s;

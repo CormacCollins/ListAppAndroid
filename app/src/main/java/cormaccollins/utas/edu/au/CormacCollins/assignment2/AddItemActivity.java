@@ -88,6 +88,7 @@ public class AddItemActivity extends AppCompatActivity {
             itm.incrementCount();
         }
 
+        //not adding duplicate items
         boolean alreadyInList = false;
         for(Item i : CurrentList.list.getItems()){
 
