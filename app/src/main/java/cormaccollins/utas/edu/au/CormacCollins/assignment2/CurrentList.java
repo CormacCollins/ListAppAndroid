@@ -29,4 +29,12 @@ public  class CurrentList {
         return itemsToAdd;
     }
 
+    public static void toggleItemChecked(Item i){
+        for(Item item : list.getItems()){
+            if(i.equals(item)){
+                item.toggleChecked();
+            }
+        }
+    }
+
 }

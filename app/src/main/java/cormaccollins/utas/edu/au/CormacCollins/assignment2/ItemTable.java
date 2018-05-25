@@ -20,13 +20,15 @@ public class ItemTable {
     private static final String TAG = "tag";
     private static final String PRICE = "price";
     private static final String COUNT = "count";
+    private static final String IS_CHECKED = "is_checked";
 
     //Creates a List Table
     public static final String CREATE_STATEMENT_ITEM =
             "CREATE TABLE " + ITEM_TABLE +  " (" + ITEM_ID + " integer primary key autoincrement, "
                     + LIST_ID + " int not null, "
                     + ITEM_NAME + " string not null, "
-                    + TAG + " string not null, " + PRICE + " real not null, " +
+                    + TAG + " string not null, " + PRICE + " real not null, "
+                    + IS_CHECKED + " int not null, " +
                     COUNT + " int not null " +
                     ");";
 
@@ -43,6 +45,23 @@ public class ItemTable {
         }
 
         return true;
+    }
+
+    public static void toggleItemChecked(SQLiteDatabase db, int itemCheckedNumber){
+//        public static boolean deleteItem(SQLiteDatabase db, long item_id){
+//            String rawQuery = "DELETE " + "FROM " + ITEM_TABLE + " WHERE " + ITEM_ID + " = " + "'" + item_id + "'";
+//
+//            try {
+//                Cursor c = db.rawQuery(rawQuery, null);
+//            }
+//            catch(Exception ex){
+//                Log.d("DELETE ITEM", "Could not delete item number " + item_id);
+//                return false;
+//            }
+//
+//            return true;
+//        }
+
     }
 
     public static boolean itemExists(SQLiteDatabase db, String item_name){
@@ -70,8 +89,14 @@ public class ItemTable {
                 String tag = (c.getString(c.getColumnIndex(TAG)));
                 int count = (c.getInt(c.getColumnIndex(COUNT)));
                 Float price = (c.getFloat(c.getColumnIndex(PRICE)));
+                int isChecked = (c.getInt(c.getColumnIndex(IS_CHECKED)));
+
 
                 Item it = new Item(item_name, tag, price);
+                if(isChecked == 1){
+                    it.toggleChecked();
+                }
+
                 it.set_id(items_list_id);
                 if(count > 1){
                     it.incrementCount();
@@ -99,6 +124,15 @@ public class ItemTable {
         values.put(TAG, i.getItemTag());
         values.put(COUNT, i.getCount());
         values.put(LIST_ID, list_id);
+        int checked;
+        if(i.isChecked()){
+            checked = 1;
+        }
+        else{
+            checked = 0;
+        }
+        values.put(IS_CHECKED, checked);
+
         return db.insert(ITEM_TABLE, null, values);
 
     }

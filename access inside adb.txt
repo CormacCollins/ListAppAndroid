@@ -1,20 +1,6 @@
-
 cd %USERPROFILE%\AppData\Local\Android\sdk\platform-tools
+
+	
 adb shell
 su
-cd data/data/cormaccollins.utas.edu.au.CormacCollins.assignment2/databases/ListDatabase
-
-update item_list_table set item_id='12' WHERE item_list_table_id=1
-
-
- select * from item_list_table;
-
-SELECT name FROM sqlite_master WHERE type='table';
-
-list table:
-ID   |   Name  |  Category | ...
-
-
-Item_table:
-
-Item_id  |  list_id  |  name  | price ...
+cd data/data/cormaccollins.utas.edu.au.CormacCollins.assignment2/databases

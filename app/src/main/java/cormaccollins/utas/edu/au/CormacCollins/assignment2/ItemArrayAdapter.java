@@ -2,6 +2,7 @@ package cormaccollins.utas.edu.au.CormacCollins.assignment2;
 
 import android.app.Service;
 import android.content.Context;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -12,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.List;
@@ -44,28 +47,28 @@ public class ItemArrayAdapter extends ArrayAdapter<Item> {
 
         TextView lblItem = row.findViewById(R.id.lblItem);
         TextView lblPrice = row.findViewById(R.id.lblPrice);
-//        final CheckBox lblCheckBox = row.findViewById(R.id.itemCheckBox);
-//
-//        lblCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-//        {
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-//            {
-//                if ( !isChecked )
-//                {
-//                    lblCheckBox.setChecked(true);
-//                }
-//                else{
-//                    lblCheckBox.setChecked(false);
-//            }
-//        });
-
+        final CheckBox checkBox = row.findViewById(R.id.checkBox);
         //Get this item attached to this adaptor at 'position'
-        Item item = this.getItem(position);
+        final Item item = this.getItem(position);
+
+        //if item is a previous list we want to check it
+        if(item.isChecked()){
+            checkBox.setChecked(true);
+        }
+
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                CurrentList.toggleItemChecked(item);
+
+            }
+        });
+
         //Set the text to information from our property
         //textView.setText(p.getAddress());
         lblItem.setText(item.getItemName());
-
         lblPrice.setText(Float.toString(item.getItemPrice()));
+
+
 
         return row;
     }
