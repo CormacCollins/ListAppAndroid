@@ -4,15 +4,22 @@ package cormaccollins.utas.edu.au.CormacCollins.assignment2;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewParent;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,17 +59,40 @@ public class ListActivity extends AppCompatActivity {
         myList.setAdapter(myListAdapter);
 
 
-        // --------------------------------------------------
-        // When checkbox is tapped - check it
-        // --------------------------------------------------
-//        CheckBox chkBox = myList. (R.id.itemCheckBox);
-//        chkBox.setOnClickListener(
-//            new View.OnClickListener() {
-//                  @Override
-//                  public void onClick(View view) {
+//        boolean isToggledRadio1 = false;
+//        final ConstraintLayout layout = findViewById(R.id.list_item_layout);
+//        ListView lsView = (ListView) layout.getChildAt(0);
 //
-//                  }
-//          });
+//        for(int v = 0; v < lsView.getCount(); v++){
+//            final View newView = layout.getChildAt(v);
+//
+//            if(newView instanceof CheckBox){
+//                CheckBox chkBox = (CheckBox)newView;
+//                chkBox.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener(){
+//                    @Override
+//                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                        if(b){
+//                            ViewParent vP =  compoundButton.getParent();
+//                            String itmname;
+//
+//                            if(vP instanceof ListView){
+//                                ListView lv = (ListView)vP;
+//                                TextView itemNameView = (TextView) lv.getChildAt(0);
+//                                itmname = itemNameView.getText().toString();
+//                            }
+//
+//                            for(Item i : CurrentList.list.getItems()){
+//                                i.toggleChecked();
+//                            }
+//                        }
+//                    }
+//                });
+//            }
+//
+//
+//        }
+
+
 
 
         // ------------------------------------------------
@@ -76,6 +106,7 @@ public class ListActivity extends AppCompatActivity {
         //no data saved - just pressing back
             Intent i = new Intent(view.getContext(), MainActivity.class);
             startActivity(i);
+            CurrentList.removeList();
             }
         });
 
@@ -136,6 +167,7 @@ public class ListActivity extends AppCompatActivity {
 //        db.close();
 //        return items;
 //    }
+
 
 
 

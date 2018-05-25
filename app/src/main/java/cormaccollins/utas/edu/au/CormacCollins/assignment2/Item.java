@@ -8,6 +8,7 @@ public class Item {
     private float price;
     private long unique_id = -1;  //may be assigned by sql lite in future?
     private int count = 0;
+    private boolean isCheckedInList = false;
 
     public Item(String itmName, String itmTag){
         name = itmName;
@@ -68,6 +69,19 @@ public class Item {
 
     public long getItemId(){
         return unique_id;
+    }
+
+    public void toggleChecked(){
+        if(isCheckedInList){
+            isCheckedInList = false;
+        }
+        else{
+            isCheckedInList = true;
+        }
+    }
+
+    public boolean isChecked(){
+        return isCheckedInList;
     }
 
 }

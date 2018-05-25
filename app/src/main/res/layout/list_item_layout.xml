@@ -4,8 +4,7 @@
     android:id="@+id/list_item_layout"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:descendantFocusability="blocksDescendants">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/lblItem"
@@ -31,24 +30,20 @@
         android:layout_marginTop="10dp"
         android:text="@string/app_name"
         android:textColor="@color/colorPrimaryDark"
-        app:layout_constraintEnd_toStartOf="@+id/itemCheckBox"
+        app:layout_constraintEnd_toStartOf="@+id/checkBox"
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox
-        android:id="@+id/itemCheckBox"
-        style="@style/Widget.AppCompat.CompoundButton.CheckBox"
-        android:layout_width="32dp"
-        android:layout_height="33dp"
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:button="@android:drawable/checkbox_off_background"
-        android:checked="false"
-        android:clickable="true"
-        android:duplicateParentState="false"
-        android:focusable="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:buttonTint="@color/colorPrimary"
+        />
 
 </android.support.constraint.ConstraintLayout>
 
