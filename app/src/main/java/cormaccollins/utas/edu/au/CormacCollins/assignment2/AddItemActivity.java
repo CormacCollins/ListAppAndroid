@@ -1,6 +1,7 @@
 package cormaccollins.utas.edu.au.CormacCollins.assignment2;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ public class AddItemActivity extends AppCompatActivity {
 
     private String listName = "";
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +68,13 @@ public class AddItemActivity extends AppCompatActivity {
         TextView t1 = this.findViewById(R.id.CalculateView);
 
 
+
+        int num1 = Integer.parseInt(e1.getText().toString());
+        int num2 = Integer.parseInt(e2.getText().toString());
+        int sum = num1 * num2;
+        t1.setText(Integer.toString(sum));
+
+
         int price = 0; String txtPrice = e1.getText().toString();
         if(txtPrice.equals("")){
             price = Integer.parseInt(txtPrice);
@@ -78,7 +87,7 @@ public class AddItemActivity extends AppCompatActivity {
             count = Integer.parseInt(txt);
         }
 
-        EditText itemEntry = findViewById(R.id.NameEdit);
+        EditText itemEntry = findViewById(R.id.AmountEdit);
         String itemName = itemEntry.getText().toString();
 
         //todo page needs tag adding

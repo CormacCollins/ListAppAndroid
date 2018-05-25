@@ -5,17 +5,41 @@
     <string name="This_Week">This week</string>
     <string name="This_Month">This month</string>
     <string name="This_Year">This Year</string>
+    <string name="Amount">Amount</string>
+    <string name="Category">Category</string>
+    <string name="Unit_price">Unit Price</string>
+    <string name="Total_price">Total Price</string>
+    <string name="Comment">Comment</string>
+    <string name="Name">Name</string>
+
+    <string-array name="catagories">
+        <item>Drink</item>
+        <item>Meat</item>
+        <item>Vegetable</item>
+        <item>Snack</item>
+        <item>Fridge</item>
+        <item>Tool</item>
+    </string-array>
+
+    <string-array name="setting">
+        <item></item>
+        <item>Name</item>
+        <item>Category</item>
+    </string-array>
 
 
 
-
-
-
-
+    <string-array name="ArrayName">
+        <item>Apple</item>
+        <item>Fish</item>
+        <item>Beef</item>
+        <item>Lamb</item>
+        <item>Beer</item>
+    </string-array>
     <!--<string-array-->
-        <!--name="add_item_options">-->
-        <!--<item>Name</item>-->
-        <!--<item>Quantity</item>-->
-        <!--<item>Price</item>-->
+    <!--name="add_item_options">-->
+    <!--<item>Name</item>-->
+    <!--<item>Quantity</item>-->
+    <!--<item>Price</item>-->
     <!--</string-array>-->
 </resources>
