@@ -35,17 +35,6 @@
         android:layout_weight="9">
 
         <TextView
-            android:id="@+id/listName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="160dp"
-            android:gravity="center_vertical|start"
-            android:text="@string/Name"
-            android:textAllCaps="true"
-            android:textStyle="bold" />
-
-        <TextView
             android:id="@+id/CategoryView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
