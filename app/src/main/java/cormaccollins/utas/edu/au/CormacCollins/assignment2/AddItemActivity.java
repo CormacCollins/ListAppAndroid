@@ -2,20 +2,18 @@ package cormaccollins.utas.edu.au.CormacCollins.assignment2;
 
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 
 public class AddItemActivity extends AppCompatActivity {
@@ -66,29 +64,28 @@ public class AddItemActivity extends AppCompatActivity {
         EditText e1 = this.findViewById(R.id.AmountEdit);
         EditText e2 = this.findViewById(R.id.UnitEdit);
         TextView t1 = this.findViewById(R.id.CalculateView);
+        TextView name = findViewById(R.id.nameEdit);
 
+        //Stop empty string errors
+        int price = 0;
+        String txtPrice = e1.getText().toString();
+        int count = 0;
+        String txtCount = e2.getText().toString();
+        String itemName = name.getText().toString();
 
+        if(txtPrice.equals("") || txtCount.equals("") || itemName.equals("")){
+            noItemAddedAlert();
+            return;
+        }
 
-        int num1 = Integer.parseInt(e1.getText().toString());
-        int num2 = Integer.parseInt(e2.getText().toString());
-        int sum = num1 * num2;
+        price = Integer.parseInt(txtPrice);
+        count = Integer.parseInt(txtCount);
+        int sum = count * price;
         t1.setText(Integer.toString(sum));
 
 
-        int price = 0; String txtPrice = e1.getText().toString();
-        if(txtPrice.equals("")){
-            price = Integer.parseInt(txtPrice);
-        }
-
-
-        //to stop empty string errors
-        int count = 0; String txt = e2.getText().toString();
-        if(txt.equals("")){
-            count = Integer.parseInt(txt);
-        }
 
         EditText itemEntry = findViewById(R.id.AmountEdit);
-        String itemName = itemEntry.getText().toString();
 
         //todo page needs tag adding
         //add new item to code storage
@@ -119,5 +116,19 @@ public class AddItemActivity extends AppCompatActivity {
         startActivity(i);
 
     }
+
+    public void noItemAddedAlert(){
+        AlertDialog alertDialog = new AlertDialog.Builder(AddItemActivity.this).create();
+        alertDialog.setTitle("");
+        alertDialog.setMessage("Please fill in all fields");
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
+    }
+
 
 }

@@ -22,6 +22,7 @@
         <activity android:name=".ListActivity" />
         <activity android:name=".AddItemActivity" />
         <activity android:name=".Setting_activity"></activity>
+        <activity android:name=".PopUpWindowCustom" android:theme="@style/AppTheme.CustomTheme" ></activity>
     </application>
 
 </manifest>
