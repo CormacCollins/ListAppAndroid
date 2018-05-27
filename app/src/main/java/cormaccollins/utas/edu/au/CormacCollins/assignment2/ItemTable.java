@@ -125,4 +125,101 @@ public class ItemTable {
         int rowsEdited = db.update(ITEM_TABLE, c, ITEM_ID + "=" + i.getItemId(), null);
         return rowsEdited;
     }
+
+    public static List<Item> getItemsByName(SQLiteDatabase db, String itemName){
+
+        //get
+        String rawQuery = "SELECT * " + "FROM " + ITEM_TABLE + " WHERE " + ITEM_NAME + " = " + "'" + itemName + "'";
+        Cursor c = db.rawQuery(rawQuery, null);
+
+        if(c.getCount() < 1){
+            return null;
+        }
+
+        List<Item> items = new ArrayList<>();
+        c.moveToFirst();
+        if (c.moveToFirst()) {
+            while (!c.isAfterLast()) {
+                long items_list_id = (c.getLong(c.getColumnIndex(LIST_ID)));
+                long item_id = (c.getLong(c.getColumnIndex(ITEM_ID)));
+                String item_name = (c.getString(c.getColumnIndex(ITEM_NAME)));
+                String tag = (c.getString(c.getColumnIndex(TAG)));
+                int count = (c.getInt(c.getColumnIndex(COUNT)));
+                Float price = (c.getFloat(c.getColumnIndex(PRICE)));
+                int isChecked = (c.getInt(c.getColumnIndex(IS_CHECKED)));
+
+
+                //Setup Item
+                Item it = new Item(item_name, tag, price);
+                it.set_id(item_id);
+                if(isChecked == 1){it.toggleChecked();}
+                if(count >= 1){
+                    //increment new item sufficient times
+                    for(int j = 1; j < count; j++) {
+                        it.incrementCount();
+                    }
+                }
+                it.setList_id(items_list_id);
+                items.add(it);
+                c.moveToNext();
+            }
+        }
+
+
+
+        return items;
+    }
+
+    public static List<Item> getItemsByCategory(SQLiteDatabase db, String category){
+
+        //get
+        String rawQuery = "SELECT * " + "FROM " + ITEM_TABLE;
+        Cursor c = db.rawQuery(rawQuery, null);
+
+        if(c.getCount() < 1){
+            return null;
+        }
+
+        List<Item> items = new ArrayList<>();
+        c.moveToFirst();
+        if (c.moveToFirst()) {
+            while (!c.isAfterLast()) {
+
+                //tag is a combined string - check if the category is inside it
+                //if yes add it to the returned list
+                String tag = (c.getString(c.getColumnIndex(TAG)));
+                if(tag.contains(category)) {
+                    long items_list_id = (c.getLong(c.getColumnIndex(LIST_ID)));
+                    long item_id = (c.getLong(c.getColumnIndex(ITEM_ID)));
+                    String item_name = (c.getString(c.getColumnIndex(ITEM_NAME)));
+
+                    int count = (c.getInt(c.getColumnIndex(COUNT)));
+                    Float price = (c.getFloat(c.getColumnIndex(PRICE)));
+                    int isChecked = (c.getInt(c.getColumnIndex(IS_CHECKED)));
+
+
+                    //Setup Item
+                    Item it = new Item(item_name, tag, price);
+                    it.set_id(item_id);
+                    if (isChecked == 1) {
+                        it.toggleChecked();
+                    }
+                    if (count >= 1) {
+                        //increment new item sufficient times
+                        for (int j = 1; j < count; j++) {
+                            it.incrementCount();
+                        }
+                    }
+                    it.setList_id(items_list_id);
+                    items.add(it);
+
+                }
+                c.moveToNext();
+            }
+        }
+
+
+
+        return items;
+    }
 }

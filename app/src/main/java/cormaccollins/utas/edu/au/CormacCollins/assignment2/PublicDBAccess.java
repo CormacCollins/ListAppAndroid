@@ -72,6 +72,14 @@ public class PublicDBAccess {
         return lists;
     }
 
+    public static List<Item> getItemsByName(SQLiteDatabase db, String srchString){
+        return ItemTable.getItemsByName(db, srchString);
+    }
+
+    public static List<Item> getItemsByCategory(SQLiteDatabase db, String srchString){
+        return ItemTable.getItemsByCategory(db, srchString);
+    }
+
 
     // ----------------------------------------------------------------
     // -------------- DELETE -----------------------------------------

@@ -1,5 +1,4 @@
 package cormaccollins.utas.edu.au.CormacCollins.assignment2;
-
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
@@ -25,17 +24,14 @@ import java.util.List;
 // For lists of Items gathered through UI which need various details
 // --------------------------------------------------------------------
 
-public class ItemArrayAdapter extends ArrayAdapter<Item> {
+public class ItemSearchArrayAdaptor extends ArrayAdapter<Item> {
     private int mLayoutResourceID;
-    private ItemAdaptorCallBack callback;
+    public ItemSearchArrayAdaptor(Context context, int resource, List<Item> objects){
+        super(context, resource, objects);
 
-
-        public ItemArrayAdapter(Context context, int resource, List<Item> objects){
-            super(context, resource, objects);
-
-            //Resource is our custom view 'add_item_layout'
-            mLayoutResourceID = resource;
-        }
+        //Resource is our custom view 'add_item_layout'
+        mLayoutResourceID = resource;
+    }
 
 
 
@@ -51,23 +47,11 @@ public class ItemArrayAdapter extends ArrayAdapter<Item> {
         //inflate view, relative to parent etc.
         View row = layoutInflater.inflate(mLayoutResourceID, parent, false);
 
-        TextView lblItem = row.findViewById(R.id.lblItem);
-        TextView lblPrice = row.findViewById(R.id.lblPrice);
-        final CheckBox checkBox = row.findViewById(R.id.checkBox);
+        TextView lblItem = row.findViewById(R.id.lblItemSettings);
+        TextView lblPrice = row.findViewById(R.id.lblPriceSettings);
+        TextView lblCount = row.findViewById(R.id.settingsItemViewCount);
         //Get this item attached to this adaptor at 'position'
         final Item item = this.getItem(position);
-
-        //if item is a previous list we want to check it
-        if(item.isChecked()){
-            checkBox.setChecked(true);
-        }
-
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                CurrentList.toggleItemChecked(item);
-                callback.checkItemUpdate(item);
-            }
-        });
 
 
 
@@ -75,30 +59,9 @@ public class ItemArrayAdapter extends ArrayAdapter<Item> {
         //Set the text to information from our property
         //textView.setText(p.getAddress());
         lblItem.setText(item.getItemName());
-        lblPrice.setText(Float.toString((item.getItemPrice() * item.getCount())));
-
-        lblItem.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                callback.itemHeld(item.getItemId(), item.getItemName());
-                return true;
-            }
-        });
-
-        lblItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //do nothing - crashing for some reason?
-            }
-        });
-
-
+        lblPrice.setText(Float.toString(item.getItemPrice() * item.getCount()));
+        lblCount.setText(Integer.toString(item.getCount()));
         return row;
-    }
-
-    public void setCallback(ItemAdaptorCallBack callback){
-
-        this.callback = callback;
     }
 
 
