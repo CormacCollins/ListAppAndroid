@@ -7,18 +7,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 
 public class AddItemActivity extends AppCompatActivity {
 
     private String listName = "";
+    private int itemQuantity = 0;
+    private boolean isPriceEntered = false;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -28,6 +30,10 @@ public class AddItemActivity extends AppCompatActivity {
 
         setListTitle();
 
+
+        //Have cursor start at top
+        EditText editName = (EditText)findViewById(R.id.nameEdit);
+        editName.requestFocus();
 
         Button bckButton = findViewById(R.id.return_to_shopping_list_button);
         bckButton.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +57,70 @@ public class AddItemActivity extends AppCompatActivity {
             }
         });
 
+
+        final EditText itemPriceEdit = findViewById(R.id.ItemPriceEdit);
+        itemPriceEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                //if we have a quantity change the total price
+                if(itemQuantity > 0){
+                    String priceText = itemPriceEdit.getText().toString();
+                    float priceVal = Float.parseFloat(priceText);
+                    TextView totalPriceView = findViewById(R.id.CalculateView);
+
+                    float totalPrice = (float) itemQuantity * priceVal;
+                    totalPriceView.setText(String.valueOf(totalPrice));
+                    isPriceEntered = true;
+                }
+            }
+        });
+
+        final EditText itemCountEdit = findViewById(R.id.ItemNumberEdit);
+        itemCountEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(isPriceEntered){
+                    String text = itemCountEdit.getText().toString();
+                    if(!text.equals("")){
+                        itemQuantity = Integer.parseInt(text);
+                    }
+
+                    if(itemQuantity > 0){
+                        String priceText = itemPriceEdit.getText().toString();
+                        float priceVal = Float.parseFloat(priceText);
+                        TextView totalPriceView = findViewById(R.id.CalculateView);
+
+                        float totalPrice = (float) itemQuantity * priceVal;
+                        totalPriceView.setText(String.valueOf(totalPrice));
+                        isPriceEntered = true;
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text = itemCountEdit.getText().toString();
+                if(!text.equals("")){
+                    itemQuantity = Integer.parseInt(text);
+                }
+            }
+        });
+
     }
 
     private void setListTitle(){
@@ -61,10 +131,12 @@ public class AddItemActivity extends AppCompatActivity {
 
     public void onSubmitClick (View v)
     {
-        EditText e1 = this.findViewById(R.id.AmountEdit);
-        EditText e2 = this.findViewById(R.id.UnitEdit);
+        EditText e1 = this.findViewById(R.id.ItemPriceEdit);
+        EditText e2 = this.findViewById(R.id.ItemNumberEdit);
         TextView t1 = this.findViewById(R.id.CalculateView);
         TextView name = findViewById(R.id.nameEdit);
+        TextView comment = findViewById(R.id.CommentEdit);
+        Spinner category = findViewById(R.id.CategorySpinner);
 
         //Stop empty string errors
         int price = 0;
@@ -83,13 +155,19 @@ public class AddItemActivity extends AppCompatActivity {
         int sum = count * price;
         t1.setText(Integer.toString(sum));
 
+        //get category information
+        String cat = "";
+        if(category.getSelectedItem() != null){
+            cat = category.getSelectedItem().toString();
+        }
 
-
-        EditText itemEntry = findViewById(R.id.AmountEdit);
-
-        //todo page needs tag adding
         //add new item to code storage
-        Item itm = new Item(itemName, "", price);
+        Item itm = new Item(itemName, cat, price);
+        String comm = comment.getText().toString();
+        if(comm.equals("")){
+            itm.setDescription(comm);
+        }
+
         for(int i = 1; i < count; i++){
             itm.incrementCount();
         }

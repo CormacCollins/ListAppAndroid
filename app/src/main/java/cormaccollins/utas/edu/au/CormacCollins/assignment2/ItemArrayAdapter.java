@@ -1,7 +1,9 @@
 package cormaccollins.utas.edu.au.CormacCollins.assignment2;
 
+import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,6 +27,9 @@ import java.util.List;
 
 public class ItemArrayAdapter extends ArrayAdapter<Item> {
     private int mLayoutResourceID;
+    private ItemAdaptorCallBack callback;
+
+
         public ItemArrayAdapter(Context context, int resource, List<Item> objects){
             super(context, resource, objects);
 
@@ -39,7 +44,8 @@ public class ItemArrayAdapter extends ArrayAdapter<Item> {
     // ---------------------------------------------------------------------------
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(int position, @Nullable final View convertView, @NonNull ViewGroup parent) {
+
         //Get an inflator
         LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Service.LAYOUT_INFLATER_SERVICE);
         //inflate view, relative to parent etc.
@@ -68,9 +74,28 @@ public class ItemArrayAdapter extends ArrayAdapter<Item> {
         lblItem.setText(item.getItemName());
         lblPrice.setText(Float.toString(item.getItemPrice()));
 
+        lblItem.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                callback.itemHeld(item.getItemId(), item.getItemName());
+                return true;
+            }
+        });
+
+        lblItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //do nothing - crashing for some reason?
+            }
+        });
 
 
         return row;
+    }
+
+    public void setCallback(ItemAdaptorCallBack callback){
+
+        this.callback = callback;
     }
 
 

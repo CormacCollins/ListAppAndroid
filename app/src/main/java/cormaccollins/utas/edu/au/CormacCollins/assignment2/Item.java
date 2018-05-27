@@ -9,6 +9,25 @@ public class Item {
     private long unique_id = -1;  //may be assigned by sql lite in future?
     private int count = 0;
     private boolean isCheckedInList = false;
+    private String description = "";
+
+    private long list_id = -1;
+
+    public long getList_id() {
+        return list_id;
+    }
+
+    public void setList_id(long list_id) {
+        this.list_id = list_id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Item(String itmName, String itmTag){
         name = itmName;
@@ -46,7 +65,7 @@ public class Item {
     }
 
     public void set_id(long id){
-        if(id != -1){
+        if(unique_id == -1){
             unique_id = id;
         }
         else{
@@ -82,6 +101,15 @@ public class Item {
 
     public boolean isChecked(){
         return isCheckedInList;
+    }
+
+    public void clone(Item i){
+        name = i.name;
+        price = i.getItemPrice();
+        count = i.getCount();
+        description = i.getDescription();
+        unique_id = i.getItemId();
+        tag = i.getItemTag();
     }
 
 }

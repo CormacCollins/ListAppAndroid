@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
                             for(ListData l : lists){
                                 if(l.getListName() == name){
                                     newList = new ListData(l.getListName(), l.getItems(), l.getCategories(), l.getList_id(), 0);
+
                                 }
                             }
 

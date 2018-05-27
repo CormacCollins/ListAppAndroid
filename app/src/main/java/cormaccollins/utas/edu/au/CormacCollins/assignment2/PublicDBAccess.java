@@ -76,8 +76,8 @@ public class PublicDBAccess {
     // ----------------------------------------------------------------
     // -------------- DELETE -----------------------------------------
     // -----------------------------------------------------------------
-    public static boolean deleteItem(SQLiteDatabase db, Item i){
-        return ItemTable.deleteItem(db, i.getItemId());
+    public static void deleteItem(SQLiteDatabase db, Item i){
+        ItemTable.deleteItem(db, i.getItemId());
     }
 
     public static boolean deleteList(SQLiteDatabase db, ListData ls){

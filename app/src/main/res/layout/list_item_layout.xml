@@ -9,6 +9,7 @@
     <TextView
         android:id="@+id/lblItem"
         android:layout_width="176dp"
+        android:onClick="deleteItemMessage"
         android:layout_height="36dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="16dp"

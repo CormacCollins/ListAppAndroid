@@ -1,6 +1,10 @@
 package cormaccollins.utas.edu.au.CormacCollins.assignment2;
 
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -10,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Layout;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -24,7 +29,7 @@ import android.widget.ToggleButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListActivity extends AppCompatActivity {
+public class ListActivity extends AppCompatActivity implements ItemAdaptorCallBack {
 
     private String listName = "";
 
@@ -56,43 +61,9 @@ public class ListActivity extends AppCompatActivity {
 
         //Adapter attached each item in 'items' to the listView in the list_layout - showing all the items
         ListView myList = findViewById(R.id.item_list_view);
+
         myList.setAdapter(myListAdapter);
-
-
-//        boolean isToggledRadio1 = false;
-//        final ConstraintLayout layout = findViewById(R.id.list_item_layout);
-//        ListView lsView = (ListView) layout.getChildAt(0);
-//
-//        for(int v = 0; v < lsView.getCount(); v++){
-//            final View newView = layout.getChildAt(v);
-//
-//            if(newView instanceof CheckBox){
-//                CheckBox chkBox = (CheckBox)newView;
-//                chkBox.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener(){
-//                    @Override
-//                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//                        if(b){
-//                            ViewParent vP =  compoundButton.getParent();
-//                            String itmname;
-//
-//                            if(vP instanceof ListView){
-//                                ListView lv = (ListView)vP;
-//                                TextView itemNameView = (TextView) lv.getChildAt(0);
-//                                itmname = itemNameView.getText().toString();
-//                            }
-//
-//                            for(Item i : CurrentList.list.getItems()){
-//                                i.toggleChecked();
-//                            }
-//                        }
-//                    }
-//                });
-//            }
-//
-//
-//        }
-
-
+        myListAdapter.setCallback(this);
 
 
         // ------------------------------------------------
@@ -149,6 +120,7 @@ public class ListActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
     private void setListTitle(){
@@ -159,14 +131,54 @@ public class ListActivity extends AppCompatActivity {
         listName = s;
     }
 
-//    // not needed?
-//    public List<Item> getItems(ListData ls){
-//        ListDatabase databaseConnection = new ListDatabase(this);
-//        final SQLiteDatabase db = databaseConnection.open();
-//        List<Item> items = ListTable.ItemListTable.getItems(db, ls);
-//        db.close();
-//        return items;
-//    }
+
+    public void itemHeld(final long itemId, final String itemName){
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("");
+        alertDialog.setMessage("Delete item " + "'" + itemName + "' " + "?"
+        + "/n" + "Item will be removed permanently");
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "X",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        int removeItemIndex = 0;
+                        for(Item itm : CurrentList.list.getItems()){
+                            //If the item we have clicked on is found in our list
+                            if(itemName.equals(itm.getItemName())){
+
+                                //if -1 then it hasn't been assigned therefore its only a new local one
+                                //only remove from the local list - not in db yet anyway
+                                if(itemId < 0){
+                                    break;
+                                }
+                                else {
+                                    //else it's id is >1 and has been added via the db - therefore exists in it and can be deleted
+                                    ListDatabase databaseConnection = new ListDatabase(ListActivity.this);
+                                    SQLiteDatabase db = databaseConnection.open();
+                                    PublicDBAccess.deleteItem(db, itm);
+                                    databaseConnection.close();
+                                    break;
+                                }
+                            }
+                            removeItemIndex++;
+                        }
+
+                        //index inside loop is saved where it broke (above) - removes specific object
+                        CurrentList.list.getItems().remove(removeItemIndex);
+                        //reset page
+                        finish();
+                        startActivity(getIntent());
+                    }
+                });
+        alertDialog.show();
+    }
 
 
 

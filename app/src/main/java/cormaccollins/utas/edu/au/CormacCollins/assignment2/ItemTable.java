@@ -5,17 +5,15 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.view.ViewDebug;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ItemTable {
     public static final String ITEM_TABLE = "item_table";
-    private static final String ITEM_TABLE_ID = "item_table_id";
     private static final String ITEM_ID = "item_id";
-
     private static final String LIST_ID = "list_id";
-
     private static final String ITEM_NAME = "item_name";
     private static final String TAG = "tag";
     private static final String PRICE = "price";
@@ -33,18 +31,12 @@ public class ItemTable {
                     ");";
 
 
-    public static boolean deleteItem(SQLiteDatabase db, long item_id){
-        String rawQuery = "DELETE " + "FROM " + ITEM_TABLE + " WHERE " + ITEM_ID + " = " + "'" + item_id + "'";
+    public static void deleteItem(SQLiteDatabase db, long item_id){
+       // String rawQuery = "DELETE " + "FROM " + ITEM_TABLE + " WHERE " + ITEM_ID + " = " + "'" + item_id + "'";
 
-        try {
-            Cursor c = db.rawQuery(rawQuery, null);
-        }
-        catch(Exception ex){
-            Log.d("DELETE ITEM", "Could not delete item number " + item_id);
-            return false;
-        }
+        //int didDel = db.delete(ITEM_TABLE, ITEM_ID + "=" + item_id, null);
+        int res = db.delete(ITEM_TABLE, ITEM_ID + "=?",new String[]{Long.toString(item_id)});
 
-        return true;
     }
 
     public static void toggleItemChecked(SQLiteDatabase db, int itemCheckedNumber){
@@ -85,6 +77,14 @@ public class ItemTable {
         if (c.moveToFirst()) {
             while (!c.isAfterLast()) {
                 long items_list_id = (c.getLong(c.getColumnIndex(LIST_ID)));
+
+                //if not equal we can skip calcs and keep looking for the matching items to this list
+                if(items_list_id != list_id){
+                    continue;
+                }
+
+
+                long item_id = (c.getLong(c.getColumnIndex(ITEM_ID)));
                 String item_name = (c.getString(c.getColumnIndex(ITEM_NAME)));
                 String tag = (c.getString(c.getColumnIndex(TAG)));
                 int count = (c.getInt(c.getColumnIndex(COUNT)));
@@ -92,20 +92,18 @@ public class ItemTable {
                 int isChecked = (c.getInt(c.getColumnIndex(IS_CHECKED)));
 
 
+                //Setup Item
                 Item it = new Item(item_name, tag, price);
-                if(isChecked == 1){
-                    it.toggleChecked();
+                it.set_id(item_id);
+                if(isChecked == 1){it.toggleChecked();}
+                if(count >= 1){
+                    //increment new item sufficient times
+                    for(int j = 1; j < count; j++) {
+                        it.incrementCount();
+                    }
                 }
-
-                it.set_id(items_list_id);
-                if(count > 1){
-                    it.incrementCount();
-                }
-
-                if(items_list_id == list_id){
-                    items.add(it);
-                }
-
+                it.setList_id(items_list_id);
+                items.add(it);
                 c.moveToNext();
             }
         }

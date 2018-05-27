@@ -13,6 +13,7 @@
     <string name="Name">Name</string>
 
     <string-array name="catagories">
+        <item>None</item>
         <item>Drink</item>
         <item>Meat</item>
         <item>Vegetable</item>
@@ -22,13 +23,9 @@
     </string-array>
 
     <string-array name="setting">
-        <item></item>
         <item>Name</item>
         <item>Category</item>
     </string-array>
-
-
-
     <string-array name="ArrayName">
         <item>Apple</item>
         <item>Fish</item>
