@@ -65,7 +65,7 @@ public class ItemArrayAdapter extends ArrayAdapter<Item> {
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 CurrentList.toggleItemChecked(item);
-
+                callback.checkItemUpdate(item);
             }
         });
 

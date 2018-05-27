@@ -80,7 +80,26 @@ public class PublicDBAccess {
         ItemTable.deleteItem(db, i.getItemId());
     }
 
-    public static boolean deleteList(SQLiteDatabase db, ListData ls){
-        return ListTable.deleteList(db, ls.getList_id());
+    public static void deleteList(SQLiteDatabase db, long list_id){
+        int res = ListTable.deleteList(db, list_id);
+        if(res < 0){
+            Log.d("delete list", "Could not delete list id " + list_id);
+        }
     }
+
+
+    // ----------------------------------------------------------------
+    // ---------------- UPDATE ----------------------------------------
+    // ----------------------------------------------------------------
+    public static void checkOffItem(SQLiteDatabase db, Item i){
+        int checked = ItemTable.toggleItemCheck(db, i);
+        if(checked < 1){
+            Log.d("checkOffItem", "item " + i.getItemName() + " was not checked in db");
+
+        }
+        else{
+            Log.d("checkOffItem", "item " + i.getItemName() + " checked in db");
+        }
+    }
+
 }

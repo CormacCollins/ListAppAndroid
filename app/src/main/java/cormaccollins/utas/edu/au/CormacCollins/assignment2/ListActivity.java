@@ -136,7 +136,7 @@ public class ListActivity extends AppCompatActivity implements ItemAdaptorCallBa
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle("");
         alertDialog.setMessage("Delete item " + "'" + itemName + "' " + "?"
-        + "/n" + "Item will be removed permanently");
+        + '\n' + "Item will be removed permanently");
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -180,7 +180,12 @@ public class ListActivity extends AppCompatActivity implements ItemAdaptorCallBa
         alertDialog.show();
     }
 
-
-
+    //callback form adaptor when onToggle is fired - to update db
+    public void checkItemUpdate(Item i){
+        ListDatabase databaseConnection = new ListDatabase(ListActivity.this);
+        SQLiteDatabase db = databaseConnection.open();
+        PublicDBAccess.checkOffItem(db, i);
+        databaseConnection.close();
+    }
 
 }

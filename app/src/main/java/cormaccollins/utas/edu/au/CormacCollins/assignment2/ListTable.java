@@ -68,7 +68,7 @@ public class ListTable {
                 return db.insert(TABLE_NAME, null, values);
         }
 
-        public static boolean deleteList(SQLiteDatabase db, long list_id){
+        public static int deleteList(SQLiteDatabase db, long list_id){
 
             List<Item> items = ItemTable.getItemsFromItemList(db, list_id);
 
@@ -78,17 +78,18 @@ public class ListTable {
             }
 
             //next delete the existing list
-            String rawQuery = "DELETE " + "FROM " + LIST_NAME + " WHERE " + KEY_LIST_ID + " = " + "'" + list_id + "'";
+            String rawQuery = "DELETE " + "FROM " + TABLE_NAME + " WHERE " + KEY_LIST_ID + " = " + "'" + list_id + "'";
 
+            int res = 0;
             try {
-                Cursor c = db.rawQuery(rawQuery, null);
+                res = db.delete(TABLE_NAME, KEY_LIST_ID + "=?",new String[]{Long.toString(list_id)});
             }
             catch(Exception ex){
                 Log.d("DELETE LIST", "Could not delete LIST number " + list_id);
-                return false;
+                return -1;
             }
 
-            return true;
+            return res;
         }
 
 

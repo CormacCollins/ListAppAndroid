@@ -83,6 +83,9 @@ public class MainActivity extends AppCompatActivity {
 
             ArrayAdapter<String> myListAdapter =new ArrayAdapter<String>(
                     this, android.R.layout.simple_list_item_1, names){
+
+
+
                 //Need tochange to set text as black - quick and easy
                 @Override
                 public View getView(int position, View convertView, ViewGroup parent) {
@@ -98,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
 
+                            // ----------------- Set up the view ------------------------//
                             Log.d("On click list item", "clicked!");
                             Intent i = new Intent(view.getContext(), ListActivity.class);
                             String name = textView.getText().toString();
@@ -113,13 +117,36 @@ public class MainActivity extends AppCompatActivity {
 
                             //Should be list by that name because the name came form that same original List<i>
                             CurrentList.addList(newList);
+                            final long list_id = newList.getList_id();
+                            final String listName = newList.getListName();
 
                             startActivity(i);
                         }
                     });
 
+                    //for hold and delete
+                    view.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View view) {
+                            final TextView textView = (TextView) view.findViewById(android.R.id.text1);
+                            String name = textView.getText().toString();
+                            ListData newList = null;
+                            for(ListData l : lists){
+                                if(l.getListName() == name){
+                                    newList = new ListData(l.getListName(), l.getItems(), l.getCategories(), l.getList_id(), 0);
+
+                                }
+                            }
+
+                            //this will delete the list locally and in db - then refresh page
+                            onListHeldPopUp(newList.getListName(), newList.getList_id(), lists);
+                            return true;
+                        }
+                    });
+
                     return view;
                 }
+
 
             };
 
@@ -205,6 +232,34 @@ public class MainActivity extends AppCompatActivity {
         });
 
         builder.show();
+    }
+
+    public void onListHeldPopUp(final String listName, final long list_id, final List<ListData> lists){
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("");
+        alertDialog.setMessage("Delete List " + "'" + listName + "' " + "?"
+                + '\n' + "List will be removed permanently");
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "X",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                            ListDatabase databaseConnection = new ListDatabase(MainActivity.this);
+                            final SQLiteDatabase db = databaseConnection.open();
+                            PublicDBAccess.deleteList(db,list_id);
+                            //reset page
+                            finish();
+                            startActivity(getIntent());
+                    }
+        });
+
+
+        alertDialog.show();
     }
 }
 

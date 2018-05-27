@@ -4,4 +4,5 @@ import android.content.Context;
 
 public interface ItemAdaptorCallBack {
     void itemHeld(long itemId, String itemName);
+    void checkItemUpdate(Item it);
 }

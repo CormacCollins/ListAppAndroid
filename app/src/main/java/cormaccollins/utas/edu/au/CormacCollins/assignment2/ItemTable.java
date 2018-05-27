@@ -39,23 +39,6 @@ public class ItemTable {
 
     }
 
-    public static void toggleItemChecked(SQLiteDatabase db, int itemCheckedNumber){
-//        public static boolean deleteItem(SQLiteDatabase db, long item_id){
-//            String rawQuery = "DELETE " + "FROM " + ITEM_TABLE + " WHERE " + ITEM_ID + " = " + "'" + item_id + "'";
-//
-//            try {
-//                Cursor c = db.rawQuery(rawQuery, null);
-//            }
-//            catch(Exception ex){
-//                Log.d("DELETE ITEM", "Could not delete item number " + item_id);
-//                return false;
-//            }
-//
-//            return true;
-//        }
-
-    }
-
     public static boolean itemExists(SQLiteDatabase db, String item_name){
         String rawQuery = "SELECT " + ITEM_ID + " FROM " + ITEM_TABLE + " WHERE " + ITEM_NAME + " = " + "'" +item_name + "'";
         Cursor c = db.rawQuery(rawQuery, null);
@@ -133,5 +116,13 @@ public class ItemTable {
 
         return db.insert(ITEM_TABLE, null, values);
 
+    }
+
+    public static int toggleItemCheck(SQLiteDatabase db, Item i){
+        ContentValues c = new ContentValues();
+        int checked = i.isChecked() ? 1 : 0;
+        c.put(IS_CHECKED, checked);
+        int rowsEdited = db.update(ITEM_TABLE, c, ITEM_ID + "=" + i.getItemId(), null);
+        return rowsEdited;
     }
 }
