@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PublicDBAccess {
@@ -38,15 +39,28 @@ public class PublicDBAccess {
 
     //updates list by adding items to item_table
     public static void addItemsToExistingList(SQLiteDatabase db, long list_id, List<Item> items){
+        int editCount = 0;
         for(Item i : items) {
             //add items to db
             if(!(ItemTable.itemExists(db, i.getItemName()))) {
                 long item_id = addItem(db, i, list_id);
+                i.set_id(item_id);
             }
             else{
-                Log.d("add item to list", "Could not insert " + i.getItemName() + " - already exists");
+                if(i.hasBeenEdited()) {
+                    //use the itm properties the item has stored to update it
+                    i.setDescription(i.copyOfEditItemProperties.getDescription());
+                    i.setCategories(i.copyOfEditItemProperties.getCategories());
+                    i.setPrice(i.copyOfEditItemProperties.getPrice());
+                    i.setName(i.copyOfEditItemProperties.getItemName());
+                    i.setCount(i.copyOfEditItemProperties.getCount());
+                    editCount += ItemTable.editItem(db, i);
+                    i.setHasBeenEdited(false);
+                }
             }
         }
+
+        Log.d("add item to list", "edited " + editCount + " lists");
 
     }
 
@@ -80,6 +94,17 @@ public class PublicDBAccess {
         return ItemTable.getItemsByCategory(db, srchString);
     }
 
+    public static List<Item> getAllItems(SQLiteDatabase db){
+        List<Item> items = new ArrayList<>();
+        List<ListData> lists =  PublicDBAccess.getAllLists(db);
+        for(ListData ls : lists){
+            for(Item it : ls.getItems()){
+                items.add(it);
+            }
+        }
+        return items;
+    }
+
 
     // ----------------------------------------------------------------
     // -------------- DELETE -----------------------------------------
@@ -110,4 +135,10 @@ public class PublicDBAccess {
         }
     }
 
+    public static void editItem(SQLiteDatabase db, Item i, long list_id){
+        if(ItemTable.itemExists(db, i.getItemName())){
+            int rowsEdited = ItemTable.editItem(db, i);
+            Log.d("EditItem", "edited " + rowsEdited + " items");
+        }
+    }
 }

@@ -71,20 +71,21 @@ public class ListActivity extends AppCompatActivity implements ItemAdaptorCallBa
         // ------------------------------------------------
 
         //Event for return from list button
-        Button bckButton = findViewById(R.id.backButton);
+        final Button bckButton = findViewById(R.id.backButton);
         bckButton.setOnClickListener(new View.OnClickListener() {
-    public void onClick(View view) {
-        //no data saved - just pressing back
-            Intent i = new Intent(view.getContext(), MainActivity.class);
-            startActivity(i);
-            CurrentList.removeList();
-            }
+                public void onClick(View view) {
+                    //no data saved - just pressing back
+                    Intent i = new Intent(view.getContext(), MainActivity.class);
+                    startActivity(i);
+                    CurrentList.removeList();
+                }
         });
 
         //PRESS BUTTON TO ADD LIST/SAVE
         ImageView addListImageView = findViewById(R.id.addListImageView);
         addListImageView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                view.setEnabled(false);
                 Intent i = new Intent(view.getContext(), MainActivity.class);
                 //Add list to db now that it is saved
                 ListDatabase databaseConnection = new ListDatabase(ListActivity.this);
@@ -112,10 +113,10 @@ public class ListActivity extends AppCompatActivity implements ItemAdaptorCallBa
         Button newItemButton = findViewById(R.id.create_new_item_button);
         newItemButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                view.setEnabled(false);
                 Intent i = new Intent(view.getContext(), AddItemActivity.class);
                 i.putExtra("ListName", listName);
-                //Code to organise what information we add to next intent
-                //Do we want to send back any information if things are fileed out
+                i.putExtra("IsEdit", false);
                 startActivity(i);
             }
         });
@@ -135,15 +136,18 @@ public class ListActivity extends AppCompatActivity implements ItemAdaptorCallBa
     public void itemHeld(final long itemId, final String itemName){
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle("");
-        alertDialog.setMessage("Delete item " + "'" + itemName + "' " + "?"
-        + '\n' + "Item will be removed permanently");
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "",
+        alertDialog.setMessage("Edit/Delete item " + "'" + itemName + "' " + "?"
+        + '\n' + "");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "edit",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+                        Intent i = new Intent(getBaseContext(), AddItemActivity.class);
+                        i.putExtra("ItemID", itemId);
+                        i.putExtra("IsEdit", true);
+                        startActivity(i);
                     }
                 });
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "X",
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Delete",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -186,6 +190,15 @@ public class ListActivity extends AppCompatActivity implements ItemAdaptorCallBa
         SQLiteDatabase db = databaseConnection.open();
         PublicDBAccess.checkOffItem(db, i);
         databaseConnection.close();
+        setCallBackInProgress(false);
     }
+
+
+    private boolean callBackInProgress = false;
+    public boolean isCallBackInProgress() {return callBackInProgress;}
+    public void setCallBackInProgress(Boolean isInProgress){
+        callBackInProgress = isInProgress;
+    }
+
 
 }

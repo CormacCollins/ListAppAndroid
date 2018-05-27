@@ -5,8 +5,9 @@ import java.util.List;
 
 public  class CurrentList {
     public static ListData list;
-    public static List<Item> itemsToAdd = new ArrayList<>();
+    public static List<Item> toBeEdited = new ArrayList<>();
     public static boolean hasList;
+
     public static void addList(ListData ls){
         list = ls;
         hasList = true;
@@ -17,16 +18,12 @@ public  class CurrentList {
         hasList = false;
     }
 
-    public static boolean hasNewItems(){
-        return itemsToAdd.size() > 0;
+    public static boolean isItemsToEdit(){
+        return toBeEdited.size() > 0;
     }
 
-    public static void addItem(Item i){
-        itemsToAdd.add(i);
-    }
-
-    public static List<Item> getNewItems(){
-        return itemsToAdd;
+    public static List<Item> itemsToEdit(){
+        return toBeEdited;
     }
 
     public static void toggleItemChecked(Item i){

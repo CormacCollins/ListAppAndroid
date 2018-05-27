@@ -19,6 +19,7 @@ public class ItemTable {
     private static final String PRICE = "price";
     private static final String COUNT = "count";
     private static final String IS_CHECKED = "is_checked";
+    private static final String DESCRIPTION = "description";
 
     //Creates a List Table
     public static final String CREATE_STATEMENT_ITEM =
@@ -26,7 +27,8 @@ public class ItemTable {
                     + LIST_ID + " int not null, "
                     + ITEM_NAME + " string not null, "
                     + TAG + " string not null, " + PRICE + " real not null, "
-                    + IS_CHECKED + " int not null, " +
+                    + IS_CHECKED + " int not null, "
+                    + DESCRIPTION + " string, " +
                     COUNT + " int not null " +
                     ");";
 
@@ -73,6 +75,7 @@ public class ItemTable {
                 int count = (c.getInt(c.getColumnIndex(COUNT)));
                 Float price = (c.getFloat(c.getColumnIndex(PRICE)));
                 int isChecked = (c.getInt(c.getColumnIndex(IS_CHECKED)));
+                String descr = (c.getString(c.getColumnIndex(DESCRIPTION)));
 
 
                 //Setup Item
@@ -86,6 +89,7 @@ public class ItemTable {
                     }
                 }
                 it.setList_id(items_list_id);
+                it.setDescription(descr);
                 items.add(it);
                 c.moveToNext();
             }
@@ -105,6 +109,7 @@ public class ItemTable {
         values.put(TAG, i.getItemTag());
         values.put(COUNT, i.getCount());
         values.put(LIST_ID, list_id);
+        values.put(DESCRIPTION, i.getDescription());
         int checked;
         if(i.isChecked()){
             checked = 1;
@@ -123,6 +128,27 @@ public class ItemTable {
         int checked = i.isChecked() ? 1 : 0;
         c.put(IS_CHECKED, checked);
         int rowsEdited = db.update(ITEM_TABLE, c, ITEM_ID + "=" + i.getItemId(), null);
+        return rowsEdited;
+    }
+
+    public static int editItem(SQLiteDatabase db, Item i){
+        ContentValues c = new ContentValues();
+        int checked = i.isChecked() ? 1 : 0;
+        c.put(IS_CHECKED, checked);
+        c.put(ITEM_NAME, i.getItemName());
+        c.put(TAG, i.getCategories());
+        c.put(PRICE, i.getItemPrice());
+        c.put(COUNT, i.getCount());
+        c.put(DESCRIPTION, i.getDescription());
+
+        int rowsEdited;
+        if(i.getItemId() > 0){
+            rowsEdited = db.update(ITEM_TABLE, c, ITEM_ID + "=" + i.getItemId(), null);
+
+        }
+        else{
+            rowsEdited = db.update(ITEM_TABLE, c, ITEM_NAME + "=" + i.getItemName(), null);
+        }
         return rowsEdited;
     }
 
@@ -196,7 +222,7 @@ public class ItemTable {
                     int count = (c.getInt(c.getColumnIndex(COUNT)));
                     Float price = (c.getFloat(c.getColumnIndex(PRICE)));
                     int isChecked = (c.getInt(c.getColumnIndex(IS_CHECKED)));
-
+                    String descr = (c.getString(c.getColumnIndex(DESCRIPTION)));
 
                     //Setup Item
                     Item it = new Item(item_name, tag, price);
@@ -211,6 +237,7 @@ public class ItemTable {
                         }
                     }
                     it.setList_id(items_list_id);
+                    it.setDescription(descr);
                     items.add(it);
 
                 }

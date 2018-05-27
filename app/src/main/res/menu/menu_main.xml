@@ -7,24 +7,4 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/Today"
-        android:orderInCategory="100"
-        android:title="@string/Today"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/This_Week"
-        android:orderInCategory="100"
-        android:title="@string/This_Week"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/This_Month"
-        android:orderInCategory="100"
-        android:title="@string/This_Month"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/This_year"
-        android:orderInCategory="100"
-        android:title="@string/This_Year"
-        app:showAsAction="never" />
 </menu>

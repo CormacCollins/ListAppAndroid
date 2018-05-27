@@ -3,13 +3,49 @@ package cormaccollins.utas.edu.au.CormacCollins.assignment2;
 import android.util.Log;
 
 public class Item {
+    public void setName(String name) {
+        this.name = name;
+    }
+
     private String name;
     private String tag;
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
     private float price;
     private long unique_id = -1;  //may be assigned by sql lite in future?
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
     private int count = 0;
     private boolean isCheckedInList = false;
     private String description = "";
+    private String categories = "";
+    private boolean hasBeenEdited = false;
+    public Item copyOfEditItemProperties;
+    public boolean hasBeenEdited() {
+        return hasBeenEdited;
+    }
+
+    public void setHasBeenEdited(boolean hasBeenEdited) {
+        this.hasBeenEdited = hasBeenEdited;
+    }
+
+    public String getCategories() {
+        return categories;
+    }
+
+    public void setCategories(String categories) {
+        this.categories = categories;
+    }
 
     private long list_id = -1;
 
@@ -57,7 +93,8 @@ public class Item {
 
     public void incrementCount(){
         count++;
-        price = (float)count*price;
+        float actualPrice = price / count;
+        price = (float)actualPrice*count;
     }
 
     public int getCount(){
@@ -108,6 +145,7 @@ public class Item {
         price = i.getItemPrice();
         count = i.getCount();
         description = i.getDescription();
+        categories = i.getCategories();
         unique_id = i.getItemId();
         tag = i.getItemTag();
     }

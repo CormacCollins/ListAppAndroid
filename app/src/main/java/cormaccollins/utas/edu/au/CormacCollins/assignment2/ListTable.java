@@ -38,7 +38,7 @@ public class ListTable {
                 String name = (c.getString(c.getColumnIndex(LIST_NAME)));
                 //long item_table_id = (c.getLong(c.getColumnIndex(ITEM_TABLE_ID)));
                 String cats = (c.getString(c.getColumnIndex(CATEGORIES)));
-                ListData ls = new ListData(name, new ArrayList<Item>(), cats, list_id, 0);
+                ListData ls = new ListData(name, new ArrayList<Item>(), cats, list_id);
                 lists.add(ls);
                 c.moveToNext();
             }
@@ -50,9 +50,11 @@ public class ListTable {
     public static boolean list_exists(SQLiteDatabase db, ListData checkingList){
         List<ListData> lists = get_lists(db);
 
-        for(ListData l : lists){
-            if(l.getList_id() == checkingList.getList_id()){
-                return true;
+        if(lists != null) {
+            for (ListData l : lists) {
+                if (l.getList_id() == checkingList.getList_id()) {
+                    return true;
+                }
             }
         }
 

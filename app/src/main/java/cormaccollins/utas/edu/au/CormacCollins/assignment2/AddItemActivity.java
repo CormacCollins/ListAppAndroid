@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -28,8 +29,9 @@ public class AddItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_item_layout);
 
-        setListTitle();
 
+        Intent intent = getIntent();
+        setListTitle(intent);
 
         //Have cursor start at top
         EditText editName = (EditText)findViewById(R.id.nameEdit);
@@ -121,10 +123,29 @@ public class AddItemActivity extends AppCompatActivity {
             }
         });
 
+        boolean isEditItem = intent.getExtras().getBoolean("IsEdit");
+        long id = intent.getExtras().getLong("ItemID");
+        if(isEditItem){
+            for(Item it :CurrentList.list.getItems()) {
+                if(it.getItemId() == id) {
+                    editName.setText(it.getItemName());
+                    itemPriceEdit.setText(Float.toString(it.getItemPrice()));
+                    itemCountEdit.setText(Integer.toString(it.getCount()));
+                    EditText commentEdit = findViewById(R.id.CommentEdit);
+                    commentEdit.setText(it.getDescription());
+                    Spinner spinnerCats = findViewById(R.id.CategorySpinner);
+                    if (!it.getCategories().equals("")) {
+                        int i = getSpinnerIndex(spinnerCats, it.getCategories());
+                        spinnerCats.setSelection(i);
+                    }
+                }
+            }
+
+        }
+
     }
 
-    private void setListTitle(){
-        Intent i = getIntent();
+    private void setListTitle(Intent i){
         String s = i.getExtras().getString("ListName");
         listName = s;
     }
@@ -133,27 +154,29 @@ public class AddItemActivity extends AppCompatActivity {
     {
         EditText e1 = this.findViewById(R.id.ItemPriceEdit);
         EditText e2 = this.findViewById(R.id.ItemNumberEdit);
-        TextView t1 = this.findViewById(R.id.CalculateView);
         TextView name = findViewById(R.id.nameEdit);
         TextView comment = findViewById(R.id.CommentEdit);
         Spinner category = findViewById(R.id.CategorySpinner);
 
         //Stop empty string errors
-        int price = 0;
+        Float price = 0F;
         String txtPrice = e1.getText().toString();
         int count = 0;
         String txtCount = e2.getText().toString();
         String itemName = name.getText().toString();
 
-        if(txtPrice.equals("") || txtCount.equals("") || itemName.equals("")){
+        if(itemName.equals("")){
             noItemAddedAlert();
             return;
         }
 
-        price = Integer.parseInt(txtPrice);
-        count = Integer.parseInt(txtCount);
-        int sum = count * price;
-        t1.setText(Integer.toString(sum));
+        if(!txtPrice.equals("")) {
+            price = Float.parseFloat(txtPrice);
+        }
+
+        if(!txtCount.equals("")) {
+            count = Integer.parseInt(txtCount);
+        }
 
         //get category information
         String cat = "";
@@ -172,22 +195,20 @@ public class AddItemActivity extends AppCompatActivity {
             itm.incrementCount();
         }
 
-        //not adding duplicate items
-        boolean alreadyInList = false;
-        for(Item i : CurrentList.list.getItems()){
-
-            if(itm.getItemName().equals(i.getItemName())){
-                for(int j = 0; j < itm.getCount(); j++){
-                    i.incrementCount();
+        //Either update the edited item or create new one to add to list
+        if(getIntent().getExtras().getBoolean("IsEdit")){
+            for(Item i : CurrentList.list.getItems()){
+                if(i.getItemId() == getIntent().getExtras().getLong("ItemID")){
+                    //replace the item and edit in db
+                    i.setHasBeenEdited(true);
+                    i.copyOfEditItemProperties = itm;
                 }
-                alreadyInList = true;
             }
         }
-
-        if(!alreadyInList){
+        else {
             CurrentList.list.addItem(itm);
-
         }
+
 
         Intent i = new Intent(v.getContext(), ListActivity.class);
         i.putExtra("ListName", listName);
@@ -198,7 +219,7 @@ public class AddItemActivity extends AppCompatActivity {
     public void noItemAddedAlert(){
         AlertDialog alertDialog = new AlertDialog.Builder(AddItemActivity.this).create();
         alertDialog.setTitle("");
-        alertDialog.setMessage("Please fill in all fields");
+        alertDialog.setMessage("Please fill in name field");
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -206,6 +227,19 @@ public class AddItemActivity extends AppCompatActivity {
                     }
                 });
         alertDialog.show();
+    }
+
+    //https://stackoverflow.com/questions/8769368/how-to-set-position-in-spinner
+    private int getSpinnerIndex(Spinner spinner, String myString){
+
+        int index = 0;
+
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).equals(myString)){
+                index = i;
+            }
+        }
+        return index;
     }
 
 

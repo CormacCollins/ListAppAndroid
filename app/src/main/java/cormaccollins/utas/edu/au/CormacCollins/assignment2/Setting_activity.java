@@ -51,6 +51,16 @@ public class Setting_activity extends AppCompatActivity {
             }
         });
 
+        final Button bckButton = findViewById(R.id.backButtonSettings);
+        bckButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                //no data saved - just pressing back
+                Intent i = new Intent(view.getContext(), MainActivity.class);
+                startActivity(i);
+                CurrentList.removeList();
+            }
+        });
+
         final Spinner settingsSpinner = findViewById(R.id.settingsSpinnerCategory);
         //may have prviously been searching another category and the page was refreshed
         //we can set the selection to our previous search Type which has been retained
@@ -98,7 +108,9 @@ public class Setting_activity extends AppCompatActivity {
         if(CurrentList.hasList){
             items = CurrentList.list.getItems();
         } else{
-            items = new ArrayList<>();
+            ListDatabase listdb = new ListDatabase(this);
+            SQLiteDatabase db = listdb.open();
+            items = PublicDBAccess.getAllItems(db);
         }
 
         //item list specific to search

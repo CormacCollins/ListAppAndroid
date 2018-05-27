@@ -8,7 +8,6 @@ import java.util.List;
 public class ListData  {
     private String name;
     private Long list_id = null;
-    //private Long item_table_id = null;
     private List<Item> items;
     //We will just have comma seperates names - varchar in sql lite is 500 in size,
     // we should not go over this and we can prevent any greater
@@ -18,24 +17,15 @@ public class ListData  {
         name = listName;
         items = itemList;
         categories = ""; //empty if not used
-        list_id = (long)0;
+        list_id = (long)-1;
        // item_table_id = (long)0;
     }
 
-    public ListData(String listName, List<Item> itemList, String cat, long listID, long tableID){
+    public ListData(String listName, List<Item> itemList, String cats, long listID){
         name = listName;
         items = itemList;
-        categories = ""; //empty if not used
+        categories = cats;
         list_id = listID;
-      //  item_table_id = tableID;
-    }
-
-    public ListData(ListData ls, long listID, long tableID){
-        name = ls.getListName();
-        items = ls.getItems();
-        categories = ls.getCategories(); //empty if not used
-        list_id = listID;
-       // item_table_id = tableID;
     }
 
     public void addItem(Item item){

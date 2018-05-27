@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                             ListData newList = null;
                             for(ListData l : lists){
                                 if(l.getListName() == name){
-                                    newList = new ListData(l.getListName(), l.getItems(), l.getCategories(), l.getList_id(), 0);
+                                    newList = new ListData(l.getListName(), l.getItems(), l.getCategories(), l.getList_id());
 
                                 }
                             }
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                             ListData newList = null;
                             for(ListData l : lists){
                                 if(l.getListName() == name){
-                                    newList = new ListData(l.getListName(), l.getItems(), l.getCategories(), l.getList_id(), 0);
+                                    newList = new ListData(l.getListName(), l.getItems(), l.getCategories(), l.getList_id());
 
                                 }
                             }
@@ -183,15 +183,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_settings:
                 Intent action_settings = new Intent(this, Setting_activity.class );
                 startActivity(action_settings);
-                break;
-            case R.id.Today:
-                break;
-            case R.id.This_Week:
-                break;
-            case R.id.This_Month:
-                break;
-            case R.id.This_year:
-                break;
             default:
         }
         return super.onOptionsItemSelected(item);

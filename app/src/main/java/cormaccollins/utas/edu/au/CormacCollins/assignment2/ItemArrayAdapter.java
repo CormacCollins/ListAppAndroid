@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,7 +29,7 @@ import java.util.List;
 public class ItemArrayAdapter extends ArrayAdapter<Item> {
     private int mLayoutResourceID;
     private ItemAdaptorCallBack callback;
-
+    private boolean callbackInProgress = false;
 
         public ItemArrayAdapter(Context context, int resource, List<Item> objects){
             super(context, resource, objects);
@@ -64,18 +65,39 @@ public class ItemArrayAdapter extends ArrayAdapter<Item> {
 
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                CurrentList.toggleItemChecked(item);
-                callback.checkItemUpdate(item);
+                if(!callback.isCallBackInProgress()) {
+                    callback.setCallBackInProgress(true);
+                    CurrentList.toggleItemChecked(item);
+                    callback.checkItemUpdate(item);
+                }
             }
         });
 
 
 
 
+
         //Set the text to information from our property
         //textView.setText(p.getAddress());
-        lblItem.setText(item.getItemName());
-        lblPrice.setText(Float.toString((item.getItemPrice() * item.getCount())));
+        if(item.hasBeenEdited()){
+            String count = "";
+            if(item.copyOfEditItemProperties.getCount() > 1){
+                count = "(" + Integer.toString(item.copyOfEditItemProperties.getCount()) + ")";
+            }
+            lblItem.setText(item.copyOfEditItemProperties.getItemName() + count);
+            Float f = item.copyOfEditItemProperties.getPrice() * (item.copyOfEditItemProperties.getCount());
+            lblPrice.setText(Float.toString(f));
+        }
+        else{
+            String count = "";
+            if(item.getCount() > 1){
+                count = "(" +  Integer.toString(item.getCount())  + ")";
+            }
+            lblItem.setText(item.getItemName() + count);
+
+            lblPrice.setText(Float.toString((item.getItemPrice() * item.getCount())));
+
+        }
 
         lblItem.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -88,7 +110,6 @@ public class ItemArrayAdapter extends ArrayAdapter<Item> {
         lblItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //do nothing - crashing for some reason?
             }
         });
 
