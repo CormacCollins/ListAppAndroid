@@ -95,11 +95,15 @@ public class ListActivity extends AppCompatActivity implements ItemAdaptorCallBa
 
                 boolean listExists = PublicDBAccess.list_exists(db, ls);
 
-                if(!listExists){
-                    PublicDBAccess.addNewList(db, ls);
+                try {
+                    if (!listExists) {
+                        PublicDBAccess.addNewList(db, ls);
+                    } else {
+                        PublicDBAccess.addItemsToExistingList(db, ls.getList_id(), ls.getItems());
+                    }
                 }
-                else{
-                    PublicDBAccess.addItemsToExistingList(db, ls.getList_id(), ls.getItems());
+                catch(Exception ex){
+
                 }
                 //remove code storage of list as we are returning to home page (keep no memory of this list in the 'Current List'
                 CurrentList.removeList();

@@ -77,7 +77,17 @@ public class AddItemActivity extends AppCompatActivity {
                 //if we have a quantity change the total price
                 if(itemQuantity > 0){
                     String priceText = itemPriceEdit.getText().toString();
-                    float priceVal = Float.parseFloat(priceText);
+                    if(priceText == ""){
+                        return;
+                    }
+                    float priceVal;
+                    try {
+                        priceVal = Float.parseFloat(priceText);
+                    }
+                    catch (Exception ex){
+                        priceVal = 0;
+                    }
+
                     TextView totalPriceView = findViewById(R.id.CalculateView);
 
                     float totalPrice = (float) itemQuantity * priceVal;
