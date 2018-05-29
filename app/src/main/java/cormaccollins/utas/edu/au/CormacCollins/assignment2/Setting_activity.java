@@ -40,7 +40,7 @@ public class Setting_activity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 List<Item> items = queryForItems(srchType ,query);
-                callbackRef.resfreshItemList(items, query);
+                resfreshItemList(items, query);
                 return true;
             }
 

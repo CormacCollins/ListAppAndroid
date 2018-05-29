@@ -45,6 +45,7 @@ public class Item {
 
     public void setCategories(String categories) {
         this.categories = categories;
+        this.tag = categories;
     }
 
     private long list_id = -1;
@@ -67,19 +68,19 @@ public class Item {
 
     public Item(String itmName, String itmTag){
         name = itmName;
-        tag = itmTag;
+        tag = itmTag; categories = itmTag;
     }
 
     public Item(String itmName, String itmTag, float price_){
         name = itmName;
-        tag = itmTag;
+        tag = itmTag; categories = itmTag;
         price = price_;
         count = 1;
     }
 
     public Item(String itmName, String itmTag, double price_){
         name = itmName;
-        tag = itmTag;
+        tag = itmTag; categories = itmTag;
         price = (float)price_;
         count = 1;
     }

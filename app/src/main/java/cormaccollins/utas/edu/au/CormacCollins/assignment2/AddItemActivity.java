@@ -208,10 +208,12 @@ public class AddItemActivity extends AppCompatActivity {
         //Either update the edited item or create new one to add to list
         if(getIntent().getExtras().getBoolean("IsEdit")){
             for(Item i : CurrentList.list.getItems()){
-                if(i.getItemId() == getIntent().getExtras().getLong("ItemID")){
+                if(i.getItemId() == getIntent().getExtras().getLong("ItemID") ||
+                        i.getItemName() == itemName){
                     //replace the item and edit in db
                     i.setHasBeenEdited(true);
                     i.copyOfEditItemProperties = itm;
+                    break;
                 }
             }
         }
